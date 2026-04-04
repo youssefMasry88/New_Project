@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-Frame: #F8EEE2;
+  --color-primary: #A7670F;
+  --color-secondary: #9a866e;
+  --color-third: #C1A889;
+  
+  --font-nav : "Unbounded", sans-serif;
+  --font-secondary: "Times New Roman", Times, serif;
+  --font-third: "Playfair Display", serif;
+  
+}
+
+@layer utilities {
+  .font-secondary {
+    font-family: var(--font-secondary);
+  }
+  .font-nav {
+    font-family: var(--font-nav);
+  }
+  .font-third {
+    font-family: "Playfair Display", serif;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply  text-secondary font-nav hover:text-primary transition-all;
+  }
+  .footer-link {
+    @apply  text-primary font-nav hover:text-secondary transition-all;
+  }
+
+  .logo-text {
+    @apply font-nav text-secondary text-[16px] ;
+  }
+}
+
+.custom-bullet {
+  @apply w-10 h-0.5 rounded-none inline-block mx-2 transition-all duration-500 cursor-pointer;
+  opacity: 1 !important;
+}
+
+.custom-bullet.swiper-pagination-bullet-active {
+  @apply bg-primary w-20; 
+}
+
+ @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 1.2s ease-out forwards;
+} 
+.swiper-pagination-bullets {
+  bottom: 0px !important;
+  text-align: center;
+}
+
+/* أضف هذا في index.css */
+.swiper-slide img {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0); /* تفعيل كرت الشاشة */
+}
