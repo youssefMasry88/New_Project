@@ -1,11 +1,14 @@
-import React from "react";
+import React, {  useEffect } from "react";
 import home from "../../assets/Home2.jpg";
 import Hand1 from "../../assets/Hand1.jpg";
 import { Link } from "react-router-dom";
 import Aos from "aos";
 export default function OfferSectionLeft() {
-  Aos.init();
-  return (
+
+useEffect(() => {
+  Aos.init({ once: true });
+}, [])
+return (
 <div>
       <section className="py-10">
       <div className="max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -21,7 +24,7 @@ export default function OfferSectionLeft() {
             <h3 className="font-nav text-primary text-3xl " >
               Old Hand Made
             </h3>
-            <Link>
+            <Link to={"/shop"}>
               <span className="font-nav  text-sm text-secondary underline hover:text-primary ">
                 shop it Now
               </span>
@@ -40,9 +43,9 @@ export default function OfferSectionLeft() {
 
           <p className="font-third md:text-sm text-third leading-relaxed" data-aos="fade-up" data-aos-duration="1000">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            <button data-aos="fade-up" data-aos-duration="3000" className="bg-secondary text-white  text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95">
+            <Link to={"/shop"} data-aos="fade-up" data-aos-duration="3000" className="bg-secondary text-white  text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95">
               Buy It Now
-            </button>
+            </Link>
         </div>
       </div>
     </section>
@@ -69,9 +72,9 @@ export default function OfferSectionLeft() {
             Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
           </p>
 
-          <button data-aos="fade-up" data-aos-duration="3000" className="bg-secondary text-white font-modern text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95">
+          <Link to={"/shop"} data-aos="fade-up" data-aos-duration="3000" className="bg-secondary text-white font-modern text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95">
             Buy It Now
-          </button>
+          </Link>
         </div>
 
 
@@ -88,9 +91,9 @@ export default function OfferSectionLeft() {
             <h3 className="font-modern text-primary text-3xl font-bold">
               Old Hand Made
             </h3>
-            <button className="text-white border-b border-white text-xs uppercase tracking-[0.2em] hover:text-primary hover:border-primary transition-colors">
+            <Link to={"/shop"} className="text-white border-b border-white text-xs uppercase tracking-[0.2em] hover:text-primary hover:border-primary transition-colors">
               shop it Now
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -110,7 +113,7 @@ export default function OfferSectionLeft() {
             <h3 className="font-nav text-primary text-3xl " >
               Old Hand Made
             </h3>
-            <Link>
+            <Link to={"/shop"}>
               <span className="font-nav  text-sm text-secondary underline hover:text-primary ">
                 shop it Now
               </span>
@@ -129,9 +132,9 @@ export default function OfferSectionLeft() {
 
           <p className="font-third md:text-sm text-third leading-relaxed" data-aos="fade-up" data-aos-duration="1000">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            <button data-aos="fade-up" data-aos-duration="3000" className="bg-secondary text-white font-modern text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95">
+            <Link to={"/shop"} data-aos="fade-up" data-aos-duration="3000" className="bg-secondary text-white font-modern text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95">
               Buy It Now
-            </button>
+            </Link>
         </div>
       </div>
     </section>

@@ -4,5 +4,5 @@ export const NavLinks = [
   { name: "Cart", path: "/cart", side: "left" },
   { name: "Search", path: "/search", side: "right", type: "button" },
   { name: "Account", path: "/account", side: "right" },
-  { name: "Login", path: "/SignUp", side: "right" },
+  { name: "Login", path: "/login", side: "right" },
 ];

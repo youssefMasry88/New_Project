@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import homeImg1 from "../assets/Home.jpg";
 import homeImg2 from "../assets/Home2.jpg";
@@ -20,6 +20,7 @@ import InstagramGallery from "../Components/Home/CategoriesSection";
 // import NewArrivals from "../Components/Home/NewArrivals";
 
 export default function HomePage() {
+  const [showBtn, setShowBtn] = useState(false);
   const handleScroll = () => {
     window.scrollTo({
       top: 0,
@@ -41,9 +42,13 @@ export default function HomePage() {
       subtitle: " Crafted with Passion",
     },
   ];
+useEffect(()=> {
+  window.addEventListener("scroll", () => {
+    setShowBtn(window.scrollY > 300);
+  });
+}, [])
   return (
     <div>
-      
       <div className="relative h-screen w-full group ">
         <Swiper
           onBeforeInit={(swiper) => {
@@ -83,7 +88,7 @@ export default function HomePage() {
                   </h1>
 
                   <Link
-                    to={"/collection"}
+                    to={"/shop"}
                     className=" mt-8 px-8 py-3 border border-white text-white text-xs rounded-md tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all duration-300"
                   >
                     Discover Collection
@@ -144,16 +149,17 @@ export default function HomePage() {
       <div>
         <OfferSectionLeft />
       </div>
-            <InstagramGallery />
-          <div className="relative">
-                  <button
-        onClick={handleScroll}
-        className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
-      >
-        <FaArrowUp />
-      </button>
-          </div>
+      <InstagramGallery />
+      <div className="relative">
+          {showBtn && (
+        <button
+          onClick={handleScroll}
+          className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
+        >
+          <FaArrowUp />
+        </button>
+          )}
+      </div>
     </div>
-    
   );
 }

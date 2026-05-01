@@ -3,7 +3,7 @@ import { FiInstagram } from "react-icons/fi";
 
 import P1 from "../../assets/P1.jpg";
 import P2 from "../../assets/P2.jpg";
-import P3 from "../../assets/P3.jpg";
+import P3 from "../../assets/P3.png";
 import P4 from "../../assets/P4.jpg";
 import P5 from "../../assets/P5.jpg";
 import P6 from "../../assets/P6.jpg";

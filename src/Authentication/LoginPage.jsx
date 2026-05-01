@@ -101,32 +101,44 @@ function LoginPage() {
                   Remember Me
                 </label>
 
-                <Link
-                  to="/ForgotPassword"
-                  className="text-primary font-semibold"
-                >
-                  Forgot Password?
-                </Link>
+                <div>
+                  <Link
+                    to="/ForgotPassword"
+                    className="text-primary font-semibold"
+                  >
+                    Forgot Password?
+                  </Link>
+
+                  <Link to="/signup">
+                    <span className="pl-2 text-primary font-semibold">
+                    Create an Account</span>
+                    </Link>
+                </div>
               </div>
 
               {/* Social */}
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
+                <Link
+                to="https://www.google.com/">
                 <button
                   type="button"
                   className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
-                  onClick={() => console.log("Google signup")}
+                  
                 >
                   Google
                 </button>
+                </Link>
 
+                <Link to="https://www.facebook.com/">
                 <button
                   type="button"
                   className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
-                  onClick={() => console.log("Facebook signup")}
+                  
                 >
                   Facebook
                 </button>
+                </Link>
               </div>
 
               {/* Submit */}
@@ -134,9 +146,10 @@ function LoginPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
+                  onClick={() => navigate("/")}
                   className="w-full sm:w-80 py-3 rounded-full bg-third text-primary font-semibold text-xl font-third hover:brightness-95 transition disabled:opacity-60"
                 >
-                  {isSubmitting ? "Signing Up..." : "Sign Up"}
+                  {isSubmitting ? "logging in..." : "Log In"}
                 </button>
               </div>
             </Form>

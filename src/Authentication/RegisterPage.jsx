@@ -191,21 +191,26 @@ function RegisterPage() {
               {/* Social */}
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
+                <Link
+                to="https://www.google.com/">
                 <button
                   type="button"
                   className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
-                  onClick={() => console.log("Google signup")}
+                  
                 >
                   Google
                 </button>
+                </Link>
 
+                <Link to="https://www.facebook.com/">
                 <button
                   type="button"
                   className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
-                  onClick={() => console.log("Facebook signup")}
+                  
                 >
                   Facebook
                 </button>
+                </Link>
               </div>
 
               {/* Submit */}

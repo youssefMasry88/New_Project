@@ -1,22 +1,27 @@
 {
+  
+  "homepage": "https://youssefMasry88.github.io/New_Project",
   "name": "front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@strapi/provider-email-nodemailer": "^5.36.1",
-    "@tabler/icons-react": "^3.40.0",
+    "@tabler/icons-react": "^3.41.1",
     "@tailwindcss/vite": "^4.2.0",
     "aos": "^2.3.4",
     "axios": "^1.13.5",
     "formik": "^2.4.9",
+    "framer-motion": "^12.38.0",
+    "gh-pages": "^6.3.0",
     "link": "^2.1.2",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",

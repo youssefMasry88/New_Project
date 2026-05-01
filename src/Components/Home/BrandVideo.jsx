@@ -38,15 +38,16 @@ export default function BrandVideo() {
 
           <div className="w-full max-w-6xl aspect-video shadow-2xl relative z-10 ">
             <div
-              className="absolute inset-0 z-50 "
-              onClick={() => setIsOpen(false)}
+              className="absolute inset-0 z-50 items-center justify-center flex cursor-pointer"
+              
             >
               <video
+              onClick={(e)=> e.stopPropagation}
                 src={brandVideoFile}
                 controls
                 autoPlay
                 className="w-full h-full rounded-md shadow-inner object-contain "
-              ></video>
+              />
             </div>
           </div>
         </div>
