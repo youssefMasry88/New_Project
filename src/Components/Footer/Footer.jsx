@@ -42,7 +42,7 @@ export default function Footer() {
               Quick Links
             </h1>
             <div className="flex flex-col gap-2  ">
-              <Link to="/" className="font-nav  text-secondary hover:text-primary hover:translate-x-1 transition-transform duration-200">
+              <Link to="/contact" className="font-nav  text-secondary hover:text-primary hover:translate-x-1 transition-transform duration-200">
                 Contact
               </Link>
               <Link to="/account" className="font-nav  text-secondary hover:text-primary hover:translate-x-1 transition-transform duration-200">

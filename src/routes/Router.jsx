@@ -14,6 +14,7 @@ import CartPage from "../Pages/CartPage";
 import Checkout from "../Pages/Checkout";
 import ScrollToTop from "../Components/UI/ScrollToTop";
 import SinglePage from "../Pages/SinglePage";
+import AccountPage from "../Pages/AccountPage";
 
 export const Router = createBrowserRouter([
   {
@@ -76,12 +77,17 @@ export const Router = createBrowserRouter([
       {
         path: "/Checkout",
         element: <Checkout />,
+      },
+      {
+        path: "/Account",
+        element: <AccountPage />,
       }
+      
     ],
   },
 ],
  {
-   basename: "/New_Project", 
+   basename: "/New_Project/", 
  }
 );
 

@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Banner from "../Components/NavBar/Banner";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import UnderBanner from "../Components/NavBar/UnderBanner";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../services/firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -15,19 +19,68 @@ function LoginPage() {
     email: "",
     Password: "",
   };
+
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      console.log("LOGIN:", values);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        values.email,
+        values.Password,
+      );
+
+      const user = userCredential.user;
+
+      // 💾 خزّن اليوزر
+      localStorage.setItem("user", JSON.stringify(user));
+
+      console.log("LOGIN SUCCESS:", user);
 
       navigate("/");
 
       resetForm();
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
+      setError("Invalid email or password");
     } finally {
       setSubmitting(false);
     }
   };
+
+  const handleGoogleLogin = async () => {
+    try{
+      const provider = new GoogleAuthProvider();
+
+      const result = await signInWithPopup(auth, provider);
+
+      const user = result.user;
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      console.log("GOOGLE LOGIN SUCCESS:", user);
+
+      navigate("/");
+    }catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const provider = new GoogleAuthProvider();
+  
+  //     const result = await signInWithPopup(auth, provider);
+  
+  //     const user = result.user;
+  
+  //     localStorage.setItem("user", JSON.stringify(user));
+  
+  //     console.log("GOOGLE LOGIN SUCCESS:", user);
+  
+  //     navigate("/");
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // };
   return (
     <div>
       <Banner />
@@ -111,46 +164,43 @@ function LoginPage() {
 
                   <Link to="/signup">
                     <span className="pl-2 text-primary font-semibold">
-                    Create an Account</span>
-                    </Link>
+                      Create an Account
+                    </span>
+                  </Link>
                 </div>
               </div>
 
               {/* Social */}
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
-                <Link
-                to="https://www.google.com/">
+              <div className="flex flex-col  md:flex-row items-center justify-center gap-4 pt-3 w-full">
                 <button
                   type="button"
-                  className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
-                  
+                  onClick={handleGoogleLogin}
+                  className="w-full md:w-70 py-2 rounded-full cursor-pointer border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold flex items-center justify-center gap-2"
                 >
                   Google
                 </button>
-                </Link>
 
-                <Link to="https://www.facebook.com/">
-                <button
-                  type="button"
-                  className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
-                  
+                <Link
+                  to="https://www.facebook.com/"
+                  className="flex items-center cursor-pointer justify-center gap-2 w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold"
                 >
-                  Facebook
-                </button>
+                  <button type="button" className="">
+                    Facebook
+                  </button>
                 </Link>
               </div>
 
               {/* Submit */}
-              <div className="flex justify-center">
+              <div className="flex items-center flex-col gap-2 justify-center">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  onClick={() => navigate("/")}
-                  className="w-full sm:w-80 py-3 rounded-full bg-third text-primary font-semibold text-xl font-third hover:brightness-95 transition disabled:opacity-60"
+                  className="w-full cursor-pointer sm:w-80 py-3 rounded-full bg-third text-primary font-semibold text-xl font-third hover:brightness-95 transition disabled:opacity-60"
                 >
                   {isSubmitting ? "logging in..." : "Log In"}
                 </button>
+                {error && <p className="text-red-500">{error}</p>}
               </div>
             </Form>
           )}

@@ -3,15 +3,20 @@ import products from "../data/products";
 import {  useNavigate, useParams } from "react-router-dom";
 import { addToCart} from "../utils/cart";
 import AddToCartButton from "../Components/UI/AddToCartButton";
+import { isInWishlist, toggleWishlist } from "../utils/wishlist";
 export default function SinglePage() {
     const navigate = useNavigate();
-    const [liked, setLiked] = useState(false);
+    const [quantity, setQuantity] = useState(1);
     //   const location = useLocation();
     //   const query = new URLSearchParams(location.search).get("q") || "";
+    
+    
+    
+    const { id } = useParams();
+    const product = products.find((p) => p.id === Number(id));
+    const [liked, setLiked] = useState(() => isInWishlist(product?.id));
 
-  const [quantity, setQuantity] = useState(1);
-  const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+
 if (!product) {
   return <h1 className="text-center mt-20">Product not found</h1>;
 }
@@ -90,11 +95,20 @@ const suggested = products
         >
           Add to Cart
         </button>
-        <button
+        {/* <button
          onClick={() => setLiked(!liked)}
          className="bg-primary/30 text-white py-3 w-[10%] rounded-xl mt-4 hover:opacity-90 cursor-pointer">
             {liked ? "❤️" : "🤍"}
-         </button>
+         </button> */}
+         <button
+  onClick={() => {
+    const status = toggleWishlist(product);
+    setLiked(status);
+  }}
+  className="bg-primary/30 text-white py-3 w-[10%] rounded-xl mt-4 hover:opacity-90 cursor-pointer"
+>
+  {liked ? "❤️" : "🤍"}
+</button>
        </div>
       </div>
 

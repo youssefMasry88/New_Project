@@ -9,7 +9,7 @@ import SortDropdown from "../Components/UI/SortDropdown";
 import AddToCartButton from "../Components/UI/AddToCartButton";
 import { addToCart } from "../utils/cart";
 
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function ShopPage() {
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ export default function ShopPage() {
     return 0; // Default sorting (no change)
   });
 
-const finalProducts = sortedProducts;
+  const finalProducts = sortedProducts;
   return (
     <div>
       {/* Banner */}
@@ -92,19 +92,37 @@ const finalProducts = sortedProducts;
         <div className=" mx-auto">
           <div className="lg:hidden mb-6">
             <select
+              name="category"
+              size={1}
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="w-full p-3 border rounded-xl border-secondary"
+              className="w-full 
+      bg-white/70
+      backdrop-blur-md
+      border border-secondary/30
+      text-primary
+      px-5 py-3
+      pr-12
+      rounded-2xl
+      shadow-md
+      outline-none
+      transition-all duration-300
+      hover:border-primary
+      hover:shadow-xl
+      focus:border-primary
+      focus:ring-2 focus:ring-primary/20
+      cursor-pointer
+      font-nav"
             >
               {categories.map((cat) => (
-                <option key={cat} value={cat}>
+                <option key={cat} value={cat} className="text-primary bg-white">
                   {cat}
                 </option>
               ))}
             </select>
           </div>
           <SortDropdown onSortChange={setSortType} />
-          <Motion.div className="grid grid-cols-1 sm:grid-cols-2  gap-8">
+          <Motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <AnimatePresence>
               {finalProducts.map((product) => (
                 <Motion.div

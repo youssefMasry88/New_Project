@@ -6,8 +6,16 @@ import { IconBrandX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { Form, Field, Formik } from "formik";
 import UnderBanner from "../Components/NavBar/UnderBanner";
+import { FaArrowUp } from "react-icons/fa";
 
 export default function ContactUsPage() {
+
+    const handleScroll = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   const inputClass =
     "w-full bg-transparent border-b-2 border-third focus:border-primary transition-all duration-300 outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm";
   return (
@@ -45,40 +53,37 @@ export default function ContactUsPage() {
               </p>
             </div>
 
-            <div className="flex items-center justify-between gap-2 pt-5 text-secondary ">
-              <div>
-                <h1 className="text-2xl font-secondary text-primary font-bold pb-2">
-                  Call Us
-                </h1>
-                <div className="flex flex-col gap-4 text-third text-lg ">
-                  <span className="hover:text-primary transition-colors duration-300 cursor-pointer">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between  gap-10  ">
+                <div className="flex flex-col gap-4 text-third text-lg">
+
+                  <Link to="https://instagram.com" className="hover:text-primary transition-colors duration-300 cursor-pointer">
                     email@yourcompany.com
-                  </span>
+                  </Link>
+
                   <span className="hover:text-primary transition-colors duration-300 cursor-pointer">
                     15Th Street Avenue, New York, USA
                   </span>
+
                   <span className="hover:text-primary transition-colors duration-300 cursor-pointer">
                     011-554-8798-6556
                   </span>
-                  <span className="hover:text-primary transition-colors duration-300 cursor-pointer">
-                    011-554-8798-6556
-                  </span>
+
                 </div>
-              </div>
-
-              <div className=" md:pb-27">
-                <h1 className=" text-2xl font-secondary text-primary font-bold pb-2">
-                  Social Info
-                </h1>
-
-                <div className="flex flex-col lg:flex-row items-center gap-3 mt-2">
-                  <SocialLink to="#" icon={<FaFacebookF size={20} />} />
+                <div className=" flex items-center gap-4 text-third ">
+                  <SocialLink to="#" icon={<FaFacebookF size={20} />}  />
                   <SocialLink to="#" icon={<FaLinkedinIn size={20} />} />
                   <SocialLink to="#" icon={<IconBrandX size={20} />} />
                   <SocialLink to="#" icon={<FaInstagram size={20} />} />
+                  <div>
+
+                  </div>
                 </div>
-              </div>
+
+
+              
             </div>
+
+            
           </div>
         </div>
         {/* Right */}
@@ -200,6 +205,12 @@ export default function ContactUsPage() {
       </div>
 
       <UnderBanner />
+        <button
+          onClick={handleScroll}
+          className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
+        >
+          <FaArrowUp />
+        </button>
     </div>
   );
 }

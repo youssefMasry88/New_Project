@@ -7,6 +7,7 @@ import P3 from "../../assets/P3.png";
 import P4 from "../../assets/P4.jpg";
 import P5 from "../../assets/P5.jpg";
 import P6 from "../../assets/P6.jpg";
+import { Link } from "react-router-dom";
 
 export default function InstagramGallery() {
   const images = [P1, P2, P3, P4, P5, P6];
@@ -20,14 +21,14 @@ export default function InstagramGallery() {
           Follow Us On Instagram
         </h2>
         <p className="text-third">
-          @yourbrand
+          Follow us
         </p>
       </div>
 
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
         {images.map((img, index) => (
-          <div key={index} className="relative group overflow-hidden">
+          <div key={index} className="relative group overflow-hidden rounded-2xl">
 <img
   src={img}
   alt="Instagram"
@@ -36,9 +37,9 @@ export default function InstagramGallery() {
 />
 
             {/* overlay */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center">
+            <Link to="https://instagram.com" className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center">
               <FiInstagram className="text-white text-2xl opacity-0 group-hover:opacity-100 transition" />
-            </div>
+            </Link>
           </div>
         ))}
       </div>

@@ -109,7 +109,7 @@ useEffect(()=> {
 
           <button
             onClick={() => swiperRef.current?.slideNext()}
-            className="pointer-events-auto w-12 h-12 bg-white/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500"
+            className="pointer-events-auto w-12 h-12 bg-white/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500"
           >
             <HiOutlineChevronRight size={24} />
           </button>

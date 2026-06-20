@@ -136,12 +136,12 @@ export default function AboutPage() {
           ))}
         </div>
       </div>
-      <button
-        onClick={handleScroll}
-        className="fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
-      >
-        <FaArrowUp />
-      </button>
+        <button
+          onClick={handleScroll}
+          className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
+        >
+          <FaArrowUp />
+        </button>
     </div>
   );
 }

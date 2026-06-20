@@ -31,8 +31,8 @@ return (
             </Link>
           </div>
         </div>
-        <div className="space-y-8">
-          <div className="space-y-4 ">
+        <div className="space-y-8 px-4">
+          <div className="space-y-4  ">
             <span className=" text-secondary text-sm capitalize ">
               Limited Time Offer
             </span>
@@ -56,7 +56,7 @@ return (
         
 
         {/* الجزء الأيمن: المحتوى النصي */}
-        <div className="px-6 space-y-8 ">
+        <div className="px-4 space-y-8 ">
           <div className="space-y-4">
             <span className=" text-secondary text-sm uppercase tracking-[0.3em]">
               Limited Time Offer
@@ -120,7 +120,7 @@ return (
             </Link>
           </div>
         </div>
-        <div className="space-y-8">
+        <div className="space-y-8 px-4">
           <div className="space-y-4 ">
             <span className="font-modern text-secondary text-sm capitalize ">
               Limited Time Offer

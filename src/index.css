@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 
 @theme {
@@ -5,6 +6,7 @@
   --color-primary: #A7670F;
   --color-secondary: #9a866e;
   --color-third: #C1A889;
+  --color-fourth: #caa46f;
   
   --font-nav : "Unbounded", sans-serif;
   --font-secondary: "Times New Roman", Times, serif;
