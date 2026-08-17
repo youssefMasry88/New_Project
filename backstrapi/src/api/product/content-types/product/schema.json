@@ -22,10 +22,13 @@
       "type": "blocks"
     },
     "price": {
-      "type": "decimal"
+      "type": "integer"
     },
     "stock": {
       "type": "integer"
+    },
+    "featured": {
+      "type": "boolean"
     },
     "coverImage": {
       "type": "media",
@@ -49,9 +52,25 @@
     },
     "category": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::category.category",
-      "mappedBy": "products"
+      "inversedBy": "products"
+    },
+    "bestSeller": {
+      "type": "boolean"
+    },
+    "newArrival": {
+      "type": "boolean"
+    },
+    "hover_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

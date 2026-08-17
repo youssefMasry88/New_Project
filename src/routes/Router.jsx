@@ -1,5 +1,5 @@
 import React from "react";
-import {  createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../Pages/HomePage";
 import AppLayout from "../Layout/AppLayout";
 import AboutPage from "../Pages/AboutPage";
@@ -15,80 +15,87 @@ import Checkout from "../Pages/Checkout";
 import ScrollToTop from "../Components/UI/ScrollToTop";
 import SinglePage from "../Pages/SinglePage";
 import AccountPage from "../Pages/AccountPage";
+import ProtectedRoute from "../Components/UI/ProtectedRoute";
 
-export const Router = createBrowserRouter([
+export const Router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: (
+        <>
+          <AppLayout />
+          <ScrollToTop />
+        </>
+      ),
+
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/about",
+          element: <AboutPage />,
+        },
+        {
+          path: "/contact",
+          element: <ContactUsPage />,
+        },
+
+        {
+          path: "/login",
+          element: <LoginPage />,
+        },
+        {
+          path: "/register",
+          element: <RegisterPage />,
+        },
+        {
+          path: "/forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "/reset-code",
+          element: <ResetCode />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPass />,
+        },
+        {
+          path: "/shop",
+          element: <ShopPage />,
+        },
+        {
+          path: "/product/:slug",
+          element: <SinglePage />,
+        },
+        {
+          path: "/cart",
+          element: <CartPage />,
+        },
+        {
+          path: "/checkout",
+          element: (
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/account",
+          element: (
+            <ProtectedRoute>
+              <AccountPage />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: (
-    <>
-        <AppLayout />
-        <ScrollToTop />
-      </>
-      
-    ),
-
-    children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/About",
-        element: <AboutPage />,
-      },
-      {
-        path: "/Contact",
-        element: <ContactUsPage />,
-      },
-      
-      {
-        path: "/LogIn",
-        element: <LoginPage />,
-      },
-      {
-          path: '/SignUp',
-          element: <RegisterPage/>
-      },
-      {
-          path: '/ForgotPassword',
-          element: <ForgotPassword/>
-      },
-      {
-          path: '/resetCode',
-          element: <ResetCode/>
-      },
-      {
-          path: '/resetPass',
-          element: <ResetPass/>
-      },
-      {
-        path: "/Shop",
-        element: <ShopPage />,
-      },
-      {
-        path: "/Product/:id",
-        element: <SinglePage />,
-      }
-      ,
-      {
-        path: "/Cart",
-        element: <CartPage />,
-      },
-      {
-        path: "/Checkout",
-        element: <Checkout />,
-      },
-      {
-        path: "/Account",
-        element: <AccountPage />,
-      }
-      
-    ],
+    basename: "/New_Project/",
   },
-],
- {
-   basename: "/New_Project/", 
- }
 );
 
 export default Router;

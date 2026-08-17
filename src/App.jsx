@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router-dom";
 import Router from "./routes/Router";
 import Loader from "./Components/Home/Loader";
 import { AnimatePresence, motion as Motion } from "framer-motion";
+import {Toaster} from "react-hot-toast";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ export default function App() {
             ease: [0.43, 0.13, 0.23, 0.96],
           }}
         >
+          <Toaster position="top-right" />
           <RouterProvider router={Router} />
         </Motion.div>
       )}

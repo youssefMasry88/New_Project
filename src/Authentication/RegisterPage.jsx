@@ -4,13 +4,14 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import UnderBanner from "../Components/NavBar/UnderBanner";
 import * as Yup from "yup";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../services/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import toast from "react-hot-toast";
+import { register as registerService } from "../services/authService";
+import { useAuth } from "../Context/useAuth";
 
 function RegisterPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const {login} = useAuth();
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -23,20 +24,18 @@ function RegisterPage() {
 const handleSubmit = async (values, { setSubmitting, resetForm }) => {
   try {
     setError("");
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      values.email,
-      values.Password
-    );
 
-    const user = userCredential.user;
-
+    const res = await registerService({
+      username: values.firstName,
+      email: values.email,
+      password: values.Password,
+    })
     // 💾 Local Storage
-    localStorage.setItem("user", JSON.stringify(user));
+    login(res.user, res.jwt);
 
-    console.log("REGISTER SUCCESS:", user);
-
-    navigate("/login");
+  toast.success('Register Success');
+  
+    navigate("/");
 
     resetForm();
   } catch (err) {
@@ -47,23 +46,23 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
   }
 };
 
-const handleGoogleLogin = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
+// const handleGoogleLogin = async () => {
+//   try {
+//     const provider = new GoogleAuthProvider();
 
-    const result = await signInWithPopup(auth, provider);
+//     const result = await signInWithPopup(auth, provider);
 
-    const user = result.user;
+//     const user = result.user;
 
-    localStorage.setItem("user", JSON.stringify(user));
+//     localStorage.setItem("user", JSON.stringify(user));
 
-    console.log("GOOGLE LOGIN SUCCESS:", user);
+//     console.log("GOOGLE LOGIN SUCCESS:", user);
 
-    navigate("/");
-  } catch (err) {
-    console.log(err.message);
-  }
-};
+//     navigate("/");
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
 
 
   const RegisterSchema = Yup.object({
@@ -227,14 +226,14 @@ const handleGoogleLogin = async () => {
               <div className="flex flex-col  md:flex-row items-center justify-center gap-4 pt-3 w-full">
                 
                 
-                <button
+                {/* <button
                   type="button"
                   onClick={handleGoogleLogin}
                   className="w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold flex items-center justify-center gap-2"
                   
                 >
                   Google
-                </button>
+                </button> */}
                 
 
                 <Link to="https://www.facebook.com/" className="flex items-center justify-center gap-2 w-full md:w-70 py-2 rounded-full border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold">

@@ -11,22 +11,27 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "items": {
-      "type": "json"
-    },
     "total": {
       "type": "decimal"
     },
-    "order_status": {
+    "orderStatus": {
       "type": "enumeration",
-      "default": "pending",
+      "default": "Pending",
       "enum": [
-        "pending",
-        "paid",
-        "shipped",
-        "delivered",
-        "cancelled"
+        "Pending",
+        "Processing",
+        "Delivered",
+        "Cancelled"
       ]
+    },
+    "shippingAddress": {
+      "type": "text"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "products": {
+      "type": "json"
     },
     "user": {
       "type": "relation",

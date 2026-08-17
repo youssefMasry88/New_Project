@@ -1,24 +1,22 @@
 import { Formik, Form, Field } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getWishlist } from "../utils/wishlist";
 import { Eye, EyeOff } from "lucide-react";
 import * as Yup from "yup";
+import { getMyOrders } from "../services/orderService";
+import { toast } from "react-hot-toast";
 
 export default function AccountPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("account");
   const [wishlist, setWishlist] = useState(() => getWishlist() || []);
+  const [orders, setOrders] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
 
-  const user = {
-    firstName: "Asmaa",
-    lastName: "Masry",
-    name: "Asmaa Masry",
-    email: "asmaa@example.com",
-    phone: "+20 100 000 0000",
-    address: "24 Home Street, Cairo, Egypt",
-  };
-  const firstLetter = user.name?.charAt(0).toUpperCase() || "U";
+const user = JSON.parse(localStorage.getItem("user")) || {};
+console.log(user)
+  const firstLetter = user.username?.charAt(0).toUpperCase() || "U";
 
   useEffect(() => {
     const handleWishlistUpdate = () => {
@@ -31,6 +29,24 @@ export default function AccountPage() {
       window.removeEventListener("wishlistUpdated", handleWishlistUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    if (activeTab !== "orders") return;
+
+    const fetchOrders = async () => {
+      try {
+        setLoadingOrders(true);
+        const data = await getMyOrders();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        toast.error("Failed to fetch orders. Please try again later.");
+      } finally {
+        setLoadingOrders(false);
+      }
+    };
+    fetchOrders();
+  }, [activeTab]);
 
   const tabButtonClass = (tab) =>
     `w-full rounded-md px-4 py-3 text-left text-sm font-medium transition border border-gray-300 ${
@@ -49,6 +65,11 @@ export default function AccountPage() {
       .required("Confirm password is required"),
   });
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
   const formik = `w-full bg-transparent border-b-2 border-third focus:border-primary transition-all duration-300 outline-none p-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm focus:placeholder:text-primary `;
 
   const label = `block text-sm font-medium text-primary  `;
@@ -69,7 +90,7 @@ export default function AccountPage() {
                 {firstLetter}
               </div>
 
-              <h2 className="text-2xl font-bold text-primary">{user.name}</h2>
+              <h2 className="text-2xl font-bold text-primary">{user.username}</h2>
 
               <p className="mt-1 text-sm text-secondary">{user.email}</p>
             </div>
@@ -113,6 +134,7 @@ export default function AccountPage() {
               </button>
               <button
                 type="button"
+                onClick={handleLogout}
                 className="w-full rounded-md px-4 py-3 text-left text-sm font-medium text-red-600 hover:bg-fourth border border-gray-300"
               >
                 Logout
@@ -128,11 +150,11 @@ export default function AccountPage() {
                 </h2>
                 <Formik
                   initialValues={{
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    phone: user.phone,
-                    address: user.address,
+                    firstName: user.username || "",
+                    lastName:  "",
+                    email: user.email || "",
+                    phone: user.phone || "",
+                    address: user.address || "",
                   }}
                   onSubmit={(values) => {
                     console.log("Account values:", values);
@@ -214,7 +236,6 @@ export default function AccountPage() {
             {activeTab === "orders" && (
               <section>
                 <div className="flex items-center">
-                  {/* <img width="40" height="40" src="https://img.icons8.com/emoji/48/amphora-emoji.png" alt="amphora-emoji"/> */}
                   <img
                     className="pb-5"
                     width="40"
@@ -227,27 +248,183 @@ export default function AccountPage() {
                   </h2>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b pb-4">
-                    <p className="font-medium text-gray-900">Order #1024</p>
-                    <p className="text-sm text-gray-500">March 12, 2026</p>
+                {loadingOrders ? (
+                  <p>Loading...</p>
+                ) : orders.length === 0 ? (
+                  <p className="text-secondary">No orders yet.</p>
+                ) : (
+                  <div className="space-y-6">
+                    {orders.map((order) => (
+                      <div
+                      key={order.id}
+                      className="rounded-xl border border-gray-200 p-5 shadow-sm"
+                      >
+                        {/* Headers*/}
+                        <div className="flex justify-between items-center border-b pb-3 mb-3 ">
+                        
+
+                        <div>
+                          <h3 className="text-lg font-semibold text-primary">
+                            📦 Order #{order.id}
+                          </h3>
+
+                          <p className="text-sm text-secondary">
+                            {new Date(order.createdAt).toLocaleDateString("en-GB",{
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-semibold
+                          ${
+                            order.orderStatus === "Pending"
+                              ? "bg-yellow-100 text-primary"
+                              : order.orderStatus === "Processing"
+                                ? "bg-blue-100 text-blue-700"
+                                : order.orderStatus === "Delivered"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                                }`}
+                                >
+                          {order.orderStatus}
+                        </span>
+                        </div>
+
+                          {/* Products */}
+                          
+                        <div className="space-y-2">
+                          {order.products?.map((product) => (
+                            <div
+                            key={product.id}
+                            className="flex justify-between text-sm"
+                            >
+                              <div className="flex items-center gap-4">
+                                <img src={product.image} 
+                                alt={product.name}
+                                className="w-16 h-16 rounded-lg object-cover"
+                                />
+
+                                <div>
+                                  <h3 className="font-medium text-primary">
+                                    {product.name}
+                                  </h3>
+
+                                  <p className="text-sm text-secondary">
+                                    Qty: {product.quantity}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <span>
+                                EGP {(product.price * product.quantity).toLocaleString()}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Footer */}
+
+                        <div className="border-t mt-5 pt-5 flex justify-between items-end">
+                          <div className="text-gray-700">
+                            <p className="text-sm ">
+                              {order.shippingAddress}
+                            </p >
+                            <p className="text-sm ">
+                              {order.phone}
+                            </p>
+                          </div>
+                          <h2 className="text-lg font-semibold text-primary">Total: EGP {order.total.toLocaleString()}</h2>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <span className="text-sm font-medium text-green-600">
-                    Processing
-                  </span>
-                </div>
-                <div className="space-y-4 pt-4">
-                  <div className="flex items-center justify-between border-b pb-4">
-                    <p className="font-medium text-gray-900">Order #1024</p>
-                    <p className="text-sm text-gray-500">March 12, 2026</p>
-                  </div>
-                  <span className="text-sm font-medium text-green-600">
-                    delivered
-                  </span>
-                </div>
+                )}
+                {/* {loadingOrders ? (
+  <p>Loading...</p>
+) : orders.length === 0 ? (
+  <p className="text-gray-500">No orders yet.</p>
+) : (
+  <div className="space-y-6">
+    {orders.map((order) => (
+      <div
+        key={order.id}
+        className="rounded-xl border border-gray-200 p-5 shadow-sm"
+      >
+        
+        <div className="flex justify-between items-center border-b pb-3 mb-3">
+          <div>
+            <h3 className="font-bold text-lg text-primary">
+              Order #{order.id}
+            </h3>
+
+            <p className="text-sm text-gray-500">
+              {new Date(order.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-semibold
+              ${
+                order.orderStatus === "Pending"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : order.orderStatus === "Processing"
+                  ? "bg-blue-100 text-blue-700"
+                  : order.orderStatus === "Delivered"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+          >
+            {order.orderStatus}
+          </span>
+        </div>
+
+      
+
+        <div className="space-y-2">
+          {order.products.map((product, index) => (
+            <div
+              key={index}
+              className="flex justify-between text-sm"
+            >
+              <span>
+                {product.name} × {product.quantity}
+              </span>
+
+              <span>
+                EGP {(product.price * product.quantity).toLocaleString()}
+              </span>
+            </div>
+          ))}
+        </div>
+
+      
+
+        <div className="border-t mt-4 pt-4 flex justify-between items-center">
+
+          <div>
+            <p className="text-sm text-gray-500">
+              {order.shippingAddress}
+            </p>
+
+            <p className="text-sm text-gray-500">
+              {order.phone}
+            </p>
+          </div>
+
+          <h2 className="text-xl font-bold text-primary">
+            EGP {order.total.toLocaleString()}
+          </h2>
+
+        </div>
+      </div>
+    ))}
+  </div>
+)} */}
               </section>
             )}
-
             {/* Addresses */}
             {activeTab === "addresses" && (
               <section>
@@ -329,27 +506,30 @@ export default function AccountPage() {
                   </p>
                 ) : (
                   <div className="grid gap-5 sm:grid-cols-2">
-                    {wishlist.map((item) => (
-                      <div
-                        key={item.id}
-                        className="cursor-pointer rounded-lg border border-gray-200 p-4 transition hover:-translate-y-1 hover:shadow-md"
-                        onClick={() => navigate(`/product/${item.id}`)}
-                      >
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="mb-4 h-56 w-full rounded-md object-cover"
-                        />
+                    {wishlist.map((item) => {
+                      console.log(item);
+                      return (
+                        <div
+                          key={item.id}
+                          className="cursor-pointer rounded-lg border border-gray-200 p-4 transition hover:-translate-y-1 hover:shadow-md"
+                          onClick={() => navigate(`/product/${item.slug}`)}
+                        >
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="mb-4 h-56 w-full rounded-md object-cover"
+                          />
 
-                        <h3 className="font-semibold text-primary">
-                          {item.name}
-                        </h3>
+                          <h3 className="font-semibold text-primary">
+                            {item.name}
+                          </h3>
 
-                        <p className="mt-1 text-sm text-secondary">
-                          EGP {item.price.toLocaleString()}
-                        </p>
-                      </div>
-                    ))}
+                          <p className="mt-1 text-sm text-secondary">
+                            EGP {item.price.toLocaleString()}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </section>

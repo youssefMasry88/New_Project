@@ -1,10 +1,24 @@
-import React, { useState } from "react";
-import home from "../../assets/Home2.jpg";
+import React, { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import brandVideoFile from "../../assets/brand-video.mp4";
+import { getBrandVideo } from "../../services/brandVideoService";
+
 export default function BrandVideo() {
   const [isOpen, setIsOpen] = useState(false);
+  const [brandVideo, setBrandVideo] = useState("");
+
+  useEffect(() => {
+    const fetchBrandVideo = async () => {
+      try {
+        const data = await getBrandVideo();
+        console.log(data);
+        setBrandVideo(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchBrandVideo();
+  }, []);
   return (
     <section>
       <div
@@ -12,7 +26,7 @@ export default function BrandVideo() {
         onClick={() => setIsOpen(true)}
       >
         <img
-          src={home}
+          src={`http://localhost:1337${brandVideo?.backgroundImage?.url}`}
           alt="brand story"
           className=" w-full h-full transition-transform object-cover duration-1000 group-hover:scale-105"
         />
@@ -42,8 +56,8 @@ export default function BrandVideo() {
               
             >
               <video
-              onClick={(e)=> e.stopPropagation}
-                src={brandVideoFile}
+              onClick={(e)=> e.stopPropagation()}
+                src={`http://localhost:1337${brandVideo?.video?.url}`}
                 controls
                 autoPlay
                 className="w-full h-full rounded-md shadow-inner object-contain "

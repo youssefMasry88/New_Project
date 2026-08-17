@@ -1,57 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
 import { addToCart, clearCart, getCart } from "../utils/cart";
-import products from "../data/products";
 import AddToCartButton from "../Components/UI/AddToCartButton";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import toast  from "react-hot-toast";
+import { getProducts } from "../services/productService";
+import { createOrder } from "../services/orderService";
 
 export default function Checkout() {
   const [cart, setCart] = useState(getCart());
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // input Name
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    zip: "",
-    address: "",
-    phone: "",
+  const checkoutSchema = Yup.object({
+    name: Yup.string()
+      .min(3, "Name must be at least 3 characters")
+      .required("Name is required"),
+
+    email: Yup.string().email("Invalid email").required("Email is required"),
+
+    phone: Yup.string()
+      .matches(/^[0-9]{11}$/, "Phone must be 11 digits")
+      .required("Phone is required"),
+
+    
+
+    address: Yup.string()
+      .min(10, "Address is too short")
+      .required("Address is required"),
+
   });
 
-  // input handle
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+  // fetch
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to fetch products");
+    }finally {
+      setLoading(false);
+    }
   };
 
-  // successfully order
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  fetchProducts();
+}, []);
+const suggested = products.slice(0, 4);
 
-    alert("Order placed successfully 🎉");
+const handleAdd = (product) => {
+  const added = addToCart(product);
+  console.log(product);
+  if (added) {
+    
+    console.log(getCart());
 
-    clearCart();
-    setCart([]);
-
-    setForm({
-      name: "",
-      email: "",
-      zip: "",
-      address: "",
-      phone: "",
-    });
-    navigate("/success");
-  };
-
-  const suggested = products.slice(0, 4);
-
-  const handleAdd = (product) => {
     setCart(getCart());
-    addToCart(product);
-  };
+    toast.success("Item added to cart!");
+  } else {
+    toast.error("No more stock available");
+  }
+};
+useEffect(() => {
+  if (cart.length === 0) {
+    navigate("/cart");
+  }
+}, [cart, navigate]);
+
+
+if (loading) {
+  return <h1 className="text-center mt-20">Loading...</h1>;
+}
   return (
     <div className="max-w-6xl mx-auto space-y-16 py-30 px-5 min-h-screen ">
       {/* section */}
@@ -73,73 +97,135 @@ export default function Checkout() {
             ))}
           </div>
 
-          <h1 className="mt-3 text-3xl font-secondary text-primary font-bold ">Total: EGP {total.toLocaleString()}</h1>
+          <h1 className="mt-3 text-3xl font-secondary text-primary font-bold ">
+            Total: EGP {total.toLocaleString()}
+          </h1>
         </div>
 
         {/* 🧍‍♂️ Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <h2 className="text-2xl mb-6 text-primary font-semibold">
-            Your Info
-          </h2>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            phone: "",
+            zip: "",
+            address: "",
+          }}
+          onSubmit={async (values , { resetForm }) => {
+            try{
+              const orderData = {
+                total,
+                shippingAddress: values.address,
+                phone: values.phone,
+                orderStatus: "Pending",
+                products: cart.map((item)=>({
+                  id: item.id,
+                  name: item.name,
+                  image: item.image,
+                  price: item.price,
+                  quantity: item.quantity,
+                })),
+              };
+              await createOrder(orderData);
+              toast.success("Order placed successfully");
+              clearCart();
+              setCart([]);
+              resetForm();
+              navigate("/Account");
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
-            required
-          />
+            } catch (error) {
+  console.log("ERROR:", error.response?.data);
+  console.log("DETAILS:", error.response);
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
-            required
-          />
-
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            value={form.phone}
-            onChange={handleChange}
-            className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
-            required
-          />
-          
-          <input type="text"
-            name="zip"
-            placeholder="zip"
-            value={form.zip}
-            onChange={handleChange}
-            className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
-            required
-          />
-
-          <textarea
-            name="address"
-            placeholder="Address"
-            value={form.address}
-            onChange={handleChange}
-            className="w-full bg-transparent border-b-2 border-third focus:border-primary transition-all duration-300 outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm resize-none"
-            required
-          />
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-primary text-white rounded-lg hover:opacity-90 transition"
+  toast.error("Failed to place order");
+}
+          }}
+          validationSchema={checkoutSchema}
           >
-            Confirm Order
-          </button>
-        </form>
+          <Form
+          className="space-y-3 bg-primary/5 p-6 rounded-lg"
+          >
+            <h2 className="text-2xl mb-6 text-primary font-semibold">
+              Your Info
+            </h2>
+
+            <Field
+              type="text"
+              name="name"
+              placeholder="Name"
+              className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
+              required
+            />
+            <ErrorMessage
+              name="name"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+
+            <Field
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
+              required
+            />
+            <ErrorMessage
+              name="email"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+
+            <Field
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
+              required
+            />
+            <ErrorMessage
+              name="phone"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+            <Field
+              type="text"
+              name="zip"
+              placeholder="zip"
+              className="w-full bg-transparent border-b-2 border-third focus:border-primary focus:transform duration-300 focus:shadow-2xl outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm pb-1"
+              required
+            />
+            <ErrorMessage
+              name="zip"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+
+            <Field
+              as="textarea"
+              name="address"
+              placeholder="Address"
+              className="w-full bg-transparent border-b-2 border-third focus:border-primary transition-all duration-300 outline-none py-2 text-[#2B1D12] placeholder:text-third placeholder:text-sm resize-none"
+              required
+            />
+            <ErrorMessage
+              name="address"
+              component="p"
+              className="text-red-500 text-sm"
+            />
+
+            <button
+              type="submit"
+              
+              className="w-full py-3 bg-primary text-white rounded-lg hover:opacity-90 transition"
+            >
+              Confirm Order
+            </button>
+          </Form>
+        </Formik>
       </div>
 
       {/* 🛍️ Suggested Products */}
+      {suggested.length > 0 && (
       <div>
         <h2 className="text-2xl text-primary mb-6 text-center font-semibold">
           You May Also Like
@@ -161,21 +247,22 @@ export default function Checkout() {
                   {item.name}
                 </h3>
 
-                
-
-                <span className="text-xs text-secondary">EGP {item.price.toLocaleString()}</span>
+                <span className="text-xs text-secondary">
+                  EGP {item.price.toLocaleString()}
+                </span>
               </div>
               {/* add button */}
-              <button
-                onClick={() => handleAdd(item)}
-                className="absolute bottom-20 right-2 "
-              >
-                <AddToCartButton product={item} onAdd={handleAdd} />
-              </button>
+              
+                <span className="absolute w-12 h-12 bottom-5 right-1 rounded-full flex items-center justify-center transition-all duration-300">
+                  <AddToCartButton product={item} onAdd={handleAdd} />
+                  </span>
+              
             </div>
           ))}
         </div>
       </div>
+        
+      )}
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function ForgotPassword() {
     try {
       console.log("LOGIN:", values);
 
-      navigate("/resetCode", { state: { success: true } });
+      navigate("/reset-code", { state: { success: true } });
 
       resetForm();
     } catch (err) {

@@ -19,6 +19,7 @@ export default function UnderBanner() {
       <div className="absolute inset-0 flex items-center">
         <div className="max-w-7xl mx-auto w-full px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
+            
             {/* Left */}
             <div className="max-w-xl">
               <h1 className="text-3xl md:text-6xl lg:text-7xl font-secondary italic font-bold text-primary md:my-[1.25em]">

@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FiInstagram } from "react-icons/fi";
-
-import P1 from "../../assets/P1.jpg";
-import P2 from "../../assets/P2.jpg";
-import P3 from "../../assets/P3.png";
-import P4 from "../../assets/P4.jpg";
-import P5 from "../../assets/P5.jpg";
-import P6 from "../../assets/P6.jpg";
-import { Link } from "react-router-dom";
+import { getInstagramPosts } from "../../services/instagramService";
 
 export default function InstagramGallery() {
-  const images = [P1, P2, P3, P4, P5, P6];
-
+  const [posts, setPosts] = useState([]);
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await getInstagramPosts();
+        setPosts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchPosts();
+  })
   return (
     <section className="py-24 px-6 md:px-10 lg:px-20">
       
@@ -27,19 +31,26 @@ export default function InstagramGallery() {
 
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {images.map((img, index) => (
-          <div key={index} className="relative group overflow-hidden rounded-2xl">
+        {posts.map((post) => (
+          <div key={posts.id} className="relative group overflow-hidden rounded-2xl">
 <img
-  src={img}
-  alt="Instagram"
+  src={
+    post.image?.url
+    ? `http://localhost:1337${post.image?.url}`
+    : ""
+  }
+  alt={post.altText || "Instagram"}
   loading="lazy"
   className="w-full h-55 object-cover transition duration-500 group-hover:scale-105"
 />
 
             {/* overlay */}
-            <Link to="https://instagram.com" className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center">
+            <a href={post.link || "https://instagram.com"} 
+            target="_blank"
+            rel="noreferrer"
+            className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center">
               <FiInstagram className="text-white text-2xl opacity-0 group-hover:opacity-100 transition" />
-            </Link>
+            </a>
           </div>
         ))}
       </div>

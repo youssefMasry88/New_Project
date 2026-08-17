@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import localProducts from "../data/products";
+import React, { useEffect, useState } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { AnimatePresence } from "framer-motion";
 import { IconPlus } from "@tabler/icons-react";
@@ -8,30 +7,72 @@ import { IconChevronDown } from "@tabler/icons-react";
 import SortDropdown from "../Components/UI/SortDropdown";
 import AddToCartButton from "../Components/UI/AddToCartButton";
 import { addToCart } from "../utils/cart";
-
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { getProducts } from "../services/productService";
+import { FaArrowUp } from "react-icons/fa";
+import { getCategories } from "../services/categoryService";
 export default function ShopPage() {
   const navigate = useNavigate();
-
+  const [showBtn, setShowBtn] = useState(false);
   const [filter, setFilter] = useState("All Products");
-  const categories = [
+  const [categories, setCategories] = useState([
     "All Products",
     "Best Sellers",
     "New Arrivals",
-    "Featured Pieces",
-    "Ceramic",
-    "Wooden",
-    "Glass",
-    "Handmade",
-    "Abstract Vases",
-    "Classic Vases",
-  ];
+    "Featured Pieces"
+  ]);
   const [sortType, setSortType] = useState("Default Sorting");
+  const [products, setProducts] = useState([]);
+  const handleScroll = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setShowBtn(window.scrollY > 300);
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories([
+          "All Products",
+          "Best Sellers",
+          "New Arrivals",
+          "Featured Pieces",
+          ...data.map((category) => category.name),
+        ])
+      }catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchCategories();
+  }, [])
 
   const filtered =
     filter === "All Products"
-      ? localProducts
-      : localProducts.filter((p) => p.category === filter || p.tag === filter);
+      ? products
+      : products.filter((p) => p.category === filter || p.tag === filter);
+
   const sortedProducts = [...filtered].sort((a, b) => {
     if (sortType === "Price: Low to High") {
       return a.price - b.price;
@@ -40,12 +81,21 @@ export default function ShopPage() {
       return b.price - a.price;
     }
     if (sortType === "Newest Arrivals") {
-      return b.createdAt - a.createdAt;
+      return new Date(b.createdAt) - new Date(a.createdAt);
     }
     return 0; // Default sorting (no change)
   });
 
   const finalProducts = sortedProducts;
+  const handleAdd = (product) => {
+    const added = addToCart(product);
+
+    if (added) {
+      toast.success("Item added to cart!");
+    } else {
+      toast.error("No more stock available");
+    }
+  };
   return (
     <div>
       {/* Banner */}
@@ -76,11 +126,10 @@ export default function ShopPage() {
                 transition={{ duration: 0.5 }}
                 whileHover={{ x: 10, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`text-lg cursor-pointer italic font-secondary transition-colors ${
-                  filter === cat
+                className={`text-lg cursor-pointer italic font-secondary transition-colors ${filter === cat
                     ? "text-primary underline"
                     : "text-secondary hover:text-primary"
-                }`}
+                  }`}
               >
                 {cat}
               </Motion.li>
@@ -132,7 +181,7 @@ export default function ShopPage() {
                   exit={{ opacity: 0, y: -40 }}
                   transition={{ duration: 0.5 }}
                   key={product.id}
-                  onClick={() => navigate(`/product/${product.id}`)}
+                  onClick={() => navigate(`/product/${product.slug}`)}
                   className="cursor-pointer"
                 >
                   <div className="relative p-2 overflow-hidden group rounded-2xl">
@@ -140,21 +189,20 @@ export default function ShopPage() {
                     {/* Main Image */}
                     <img
                       src={product.image}
-                      alt={product.name}
-                      className="w-full h-125 object-cover transition duration-700 group-hover:opacity-0 group-hover:scale-105 "
+                      className="w-full h-125 object-cover"
                     />
+
                     {/* Shadow */}
                     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-full h-4 bg-black/20 blur-md rounded-full"></div>
                     {/* Hover Image */}
                     <img
                       src={product.hoverImage}
-                      alt={product.name}
                       className="absolute inset-0 w-full h-130 object-cover opacity-0 transition duration-700 group-hover:opacity-100 group-hover:scale-105"
                     />
 
                     {/* Add To Cart Button */}
 
-                    <AddToCartButton product={product} onAdd={addToCart} />
+                    <AddToCartButton product={product} onAdd={handleAdd} />
                   </div>
 
                   {/* Info */}
@@ -177,6 +225,16 @@ export default function ShopPage() {
             )}
           </Motion.div>
         </div>
+      </div>
+      <div className="relative">
+        {showBtn && (
+          <button
+            onClick={handleScroll}
+            className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
+          >
+            <FaArrowUp />
+          </button>
+        )}
       </div>
     </div>
   );

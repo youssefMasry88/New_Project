@@ -4,13 +4,14 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import UnderBanner from "../Components/NavBar/UnderBanner";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../services/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import toast from "react-hot-toast";
+import { login as loginService } from "../services/authService";
+import { useAuth } from "../Context/useAuth";
 
 function LoginPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const {login} = useAuth();
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
     Password: Yup.string().required("Required"),
@@ -22,22 +23,20 @@ function LoginPage() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        values.email,
-        values.Password,
-      );
+      setError("");
 
-      const user = userCredential.user;
+      const res = await loginService({
+        identifier: values.email,
+        password: values.Password
+      });
+      // 💾  Storage
+      login(res.user, res.jwt);
 
-      // 💾 خزّن اليوزر
-      localStorage.setItem("user", JSON.stringify(user));
-
-      console.log("LOGIN SUCCESS:", user);
-
+      toast.success('Login Success');
       navigate("/");
 
       resetForm();
+
     } catch (err) {
       console.log(err.message);
       setError("Invalid email or password");
@@ -46,55 +45,40 @@ function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try{
-      const provider = new GoogleAuthProvider();
-
-      const result = await signInWithPopup(auth, provider);
-
-      const user = result.user;
-
-      localStorage.setItem("user", JSON.stringify(user));
-
-      console.log("GOOGLE LOGIN SUCCESS:", user);
-
-      navigate("/");
-    }catch (err) {
-      console.log(err.message);
-    }
-  }
-
   // const handleGoogleLogin = async () => {
-  //   try {
+  //   try{
   //     const provider = new GoogleAuthProvider();
-  
+
   //     const result = await signInWithPopup(auth, provider);
-  
+
   //     const user = result.user;
-  
+
   //     localStorage.setItem("user", JSON.stringify(user));
-  
+
   //     console.log("GOOGLE LOGIN SUCCESS:", user);
-  
+
   //     navigate("/");
-  //   } catch (err) {
+  //   }catch (err) {
   //     console.log(err.message);
   //   }
-  // };
+  // }
+
   return (
-    <div>
+    <div >
       <Banner />
+      <div>
       <div className="max-w-2xl lg:mx-auto mx-5 ">
         <h2 className="pt-[3em] pb-[1em] text-4xl font-third text-primary ">
           Log in
         </h2>
+
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={LoginSchema}
         >
           {({ isSubmitting }) => (
-            <Form className="space-y-5">
+            <Form className="space-y-5 ">
               {/* Email */}
 
               <div className="Email">
@@ -156,13 +140,13 @@ function LoginPage() {
 
                 <div>
                   <Link
-                    to="/ForgotPassword"
+                    to="/forgot-password"
                     className="text-primary font-semibold"
                   >
                     Forgot Password?
                   </Link>
 
-                  <Link to="/signup">
+                  <Link to="/register">
                     <span className="pl-2 text-primary font-semibold">
                       Create an Account
                     </span>
@@ -173,13 +157,13 @@ function LoginPage() {
               {/* Social */}
 
               <div className="flex flex-col  md:flex-row items-center justify-center gap-4 pt-3 w-full">
-                <button
+                {/* <button
                   type="button"
                   onClick={handleGoogleLogin}
                   className="w-full md:w-70 py-2 rounded-full cursor-pointer border border-[#B7772A] text-[#B7772A] hover:bg-[#B7772A] hover:text-white transition font-third text-md font-semibold flex items-center justify-center gap-2"
                 >
                   Google
-                </button>
+                </button> */}
 
                 <Link
                   to="https://www.facebook.com/"
@@ -209,6 +193,7 @@ function LoginPage() {
       <div>
         <UnderBanner />
       </div>
+    </div>
     </div>
   );
 }
