@@ -79,7 +79,7 @@ useEffect(()=> {
               <SwiperSlide key={slide.id}>
                 <div className="relative h-full w-full overflow-hidden">
                   <img
-                    src={`http://localhost:1337${slide.image.url}`}
+                    src={`https://homey-strapi.onrender.com${slide.image.url}`}
                     alt={slide.title}
                     className="h-full w-full object-cover transition-transform duration-5000 scale-100 group-hover:scale-110"
                   />

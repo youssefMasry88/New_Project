@@ -20,7 +20,7 @@ export default function SinglePage() {
       try {
         // المنتج الحالي
         const res = await axios.get(
-          `http://localhost:1337/api/products?filters[slug][$eq]=${slug}&populate=*`,
+          `https://homey-strapi.onrender.com/api/products?filters[slug][$eq]=${slug}&populate=*`,
         );
 
         const item = res.data.data[0];

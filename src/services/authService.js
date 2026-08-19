@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:1337/api/auth";
+const API = "https://homey-strapi.onrender.com/api/auth";
 export const register = async (data) => {
     const res = await axios.post(`${API}/local/register`, data);
     return res.data;

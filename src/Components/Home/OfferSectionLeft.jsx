@@ -37,7 +37,7 @@ export default function OfferSectionLeft() {
             >
               <img
                 src={offer.image.url
-                  ? `http://localhost:1337${offer.image.url}`
+                  ? `https://homey-strapi.onrender.com${offer.image.url}`
                   : ""
                 }
                 alt={offer.heading || offer.title}

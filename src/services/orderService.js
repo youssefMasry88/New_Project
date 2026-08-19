@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:1337";
+const API = "https://homey-strapi.onrender.com";
 
 export const createOrder = async (orderData) =>{
     const token = localStorage.getItem("token");

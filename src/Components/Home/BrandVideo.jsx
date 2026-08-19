@@ -5,7 +5,8 @@ import { getBrandVideo } from "../../services/brandVideoService";
 
 export default function BrandVideo() {
   const [isOpen, setIsOpen] = useState(false);
-  const [brandVideo, setBrandVideo] = useState("");
+  const [brandVideo, setBrandVideo] = useState(null);
+  const API = "https://homey-strapi.onrender.com";
 
   useEffect(() => {
     const fetchBrandVideo = async () => {
@@ -16,7 +17,7 @@ export default function BrandVideo() {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchBrandVideo();
   }, []);
   return (
@@ -25,11 +26,13 @@ export default function BrandVideo() {
         className="relative group overflow-hidden shadow-2xl h-150 md:h-screen cursor-pointer "
         onClick={() => setIsOpen(true)}
       >
-        <img
-          src={`http://localhost:1337${brandVideo?.backgroundImage?.url}`}
-          alt="brand story"
-          className=" w-full h-full transition-transform object-cover duration-1000 group-hover:scale-105"
-        />
+       {brandVideo?.backgroundImage?.url && (
+  <img
+    src={`https://homey-strapi.onrender.com${brandVideo.backgroundImage.url}`}
+    alt="brand story"
+    className="w-full h-full transition-transform object-cover duration-1000 group-hover:scale-105"
+  />
+)}
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-500 ">
           <div className="w-16 h-16 md:w-24 md:h-24 border-6 border-secondary rounded-full flex items-center justify-center text-white backdrop-blur-sm shadow-2xl">
             <div className="w-12 h-12 md:w-18 md:h-18 bg-white/20 rounded-full flex items-center justify-center pl-1">
@@ -51,17 +54,16 @@ export default function BrandVideo() {
           </button>
 
           <div className="w-full max-w-6xl aspect-video shadow-2xl relative z-10 ">
-            <div
-              className="absolute inset-0 z-50 items-center justify-center flex cursor-pointer"
-              
-            >
-              <video
-              onClick={(e)=> e.stopPropagation()}
-                src={`http://localhost:1337${brandVideo?.video?.url}`}
-                controls
-                autoPlay
-                className="w-full h-full rounded-md shadow-inner object-contain "
-              />
+            <div className="absolute inset-0 z-50 items-center justify-center flex cursor-pointer">
+              {brandVideo?.video?.url && (
+  <video
+    onClick={(e) => e.stopPropagation()}
+    src={`https://homey-strapi.onrender.com${brandVideo.video.url}`}
+    controls
+    autoPlay
+    className="w-full h-full rounded-md shadow-inner object-contain"
+  />
+)}
             </div>
           </div>
         </div>

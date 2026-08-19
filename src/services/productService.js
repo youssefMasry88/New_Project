@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:1337";
+const API = "https://homey-strapi.onrender.com";
 
 export const getProducts = async () => {
   const res = await axios.get(`${API}/api/products?populate=*`);
@@ -11,8 +11,13 @@ export const getProducts = async () => {
     name: item.title,
     price: item.price,
     stock: item.stock,
-    image: API + item.coverImage?.url,
-    hoverImage: API + item.hover_image?.url,
+   image: item.coverImage?.url
+  ? API + item.coverImage.url
+  : "",
+
+hoverImage: item.hover_image?.url
+  ? API + item.hover_image.url
+  : "",
     category: item.category?.name,
     tag: item.bestSeller
       ? "Best Sellers"
@@ -42,8 +47,13 @@ export const getProductBySlug = async (slug) => {
     name: item.title,
     price: item.price,
     stock: item.stock,
-    image: API + item.coverImage?.url,
-    hoverImage: API + item.hover_image?.url,
+    image: item.coverImage?.url
+  ? API + item.coverImage.url
+  : "",
+
+hoverImage: item.hover_image?.url
+  ? API + item.hover_image.url
+  : "",
     category: item.category?.name,
     description:
       item.description?.[0]?.children?.[0]?.text || "",
