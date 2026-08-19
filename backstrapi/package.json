@@ -26,11 +26,11 @@
   },
   "devDependencies": {},
   "engines": {
-    "node": ">=20.0.0 <=26.x.x",
-    "npm": ">=6.0.0"
-  },
-  "strapi": {
-    "uuid": "18c46523-a548-401a-9c76-e08c2989e3ac",
-    "installId": "c8ac5439a2c3ce679a4d3c36f366bc4914047e43ab1b6bad29ca5d88dfe7b3a2"
-  }
+  "node": "20.x",
+  "npm": ">=6.0.0"
+},
+"strapi": {
+  "uuid": "18c46523-a548-401a-9c76-e08c2989e3ac",
+  "installId": "c8ac5439a2c3ce679a4d3c36f366bc4914047e43ab1b6bad29ca5d88dfe7b3a2"
+}
 }
