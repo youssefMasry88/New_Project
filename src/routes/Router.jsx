@@ -94,7 +94,7 @@ export const Router = createBrowserRouter(
     },
   ],
   {
-    basename: "/New_Project/",
+    basename: import.meta.env.PROD ? "/New_Project/" : "/",
   },
 );
 
