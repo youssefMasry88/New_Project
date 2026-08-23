@@ -46,24 +46,6 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
   }
 };
 
-// const handleGoogleLogin = async () => {
-//   try {
-//     const provider = new GoogleAuthProvider();
-
-//     const result = await signInWithPopup(auth, provider);
-
-//     const user = result.user;
-
-//     localStorage.setItem("user", JSON.stringify(user));
-
-//     console.log("GOOGLE LOGIN SUCCESS:", user);
-
-//     navigate("/");
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// };
-
 
   const RegisterSchema = Yup.object({
   firstName: Yup.string().min(2, "Too short").required("First name is required"),

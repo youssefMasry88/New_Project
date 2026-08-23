@@ -106,9 +106,7 @@ export default function ContactUsPage() {
                   subject: "",
                   message: "",
                 }}
-                onSubmit={(values) => {
-                  console.log(values);
-                }}
+                
               >
                 <Form className="flex flex-col gap-4">
                   {/* Name */}

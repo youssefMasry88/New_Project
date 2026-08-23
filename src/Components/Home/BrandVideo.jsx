@@ -12,19 +12,19 @@ export default function BrandVideo() {
     const fetchBrandVideo = async () => {
       try {
         const data = await getBrandVideo();
-        console.log("BRAND VIDEO:", data);
-console.log(
+        ("BRAND VIDEO:", data);
+(
   "IMAGE URL:",
   `https://homey-strapi.onrender.com${data?.backgroundImage?.url}`
 );
-console.log(
+(
   "VIDEO URL:",
   `https://homey-strapi.onrender.com${data?.video?.url}`
 );
 
         setBrandVideo(data);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching brand video:", error);
       }
     };
     fetchBrandVideo();

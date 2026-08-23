@@ -6,12 +6,20 @@ import { motion as Motion } from "framer-motion";
 import { IconChevronDown } from "@tabler/icons-react";
 import SortDropdown from "../Components/UI/SortDropdown";
 import AddToCartButton from "../Components/UI/AddToCartButton";
-import { addToCart } from "../utils/cart";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { getProducts } from "../services/productService";
 import { FaArrowUp } from "react-icons/fa";
 import { getCategories } from "../services/categoryService";
+import {
+  addToCart,
+  getCart,
+  increaseQty,
+  decreaseQty,
+  removeItem,
+} from "../utils/cart";
+import CartDrawer from "../Components/UI/CartDrawer";
+
 export default function ShopPage() {
   const navigate = useNavigate();
   const [showBtn, setShowBtn] = useState(false);
@@ -20,10 +28,13 @@ export default function ShopPage() {
     "All Products",
     "Best Sellers",
     "New Arrivals",
-    "Featured Pieces"
+    "Featured Pieces",
   ]);
   const [sortType, setSortType] = useState("Default Sorting");
   const [products, setProducts] = useState([]);
+  const [mobileHovered, setMobileHovered] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [CartOpen, setCartOpen] = useState(false);
   const handleScroll = () => {
     window.scrollTo({
       top: 0,
@@ -42,7 +53,7 @@ export default function ShopPage() {
         const data = await getProducts();
         setProducts(data);
       } catch (error) {
-        console.log(error);
+        g(error);
       }
     };
 
@@ -59,14 +70,14 @@ export default function ShopPage() {
           "New Arrivals",
           "Featured Pieces",
           ...data.map((category) => category.name),
-        ])
-      }catch (error) {
-        console.log(error);
+        ]);
+      } catch (error) {
+        g(error);
       }
-    }
+    };
 
     fetchCategories();
-  }, [])
+  }, []);
 
   const filtered =
     filter === "All Products"
@@ -91,10 +102,37 @@ export default function ShopPage() {
     const added = addToCart(product);
 
     if (added) {
+      setCartItems(getCart());
+      setCartOpen(true);
       toast.success("Item added to cart!");
     } else {
       toast.error("No more stock available");
     }
+  };
+
+  useEffect(() => {
+    const updateCart = () => {
+      setCartItems(getCart());
+    };
+    updateCart();
+    window.addEventListener("storage", updateCart);
+    return () => {
+      window.removeEventListener("storage", updateCart);
+    };
+  }, []);
+  const handleIncrease = (id) => {
+    increaseQty(id);
+    setCartItems(getCart());
+  };
+
+  const handleDecrease = (id) => {
+    decreaseQty(id);
+    setCartItems(getCart());
+  };
+
+  const handleRemove = (id) => {
+    removeItem(id);
+    setCartItems(getCart());
   };
   return (
     <div>
@@ -126,10 +164,11 @@ export default function ShopPage() {
                 transition={{ duration: 0.5 }}
                 whileHover={{ x: 10, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`text-lg cursor-pointer italic font-secondary transition-colors ${filter === cat
+                className={`text-lg cursor-pointer italic font-secondary transition-colors ${
+                  filter === cat
                     ? "text-primary underline"
                     : "text-secondary hover:text-primary"
-                  }`}
+                }`}
               >
                 {cat}
               </Motion.li>
@@ -170,7 +209,9 @@ export default function ShopPage() {
               ))}
             </select>
           </div>
+
           <SortDropdown onSortChange={setSortType} />
+
           <Motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <AnimatePresence>
               {finalProducts.map((product) => (
@@ -184,12 +225,27 @@ export default function ShopPage() {
                   onClick={() => navigate(`/product/${product.slug}`)}
                   className="cursor-pointer"
                 >
-                  <div className="relative p-2 overflow-hidden group rounded-2xl">
+                  <div
+                    className="relative p-2 overflow-hidden group rounded-2xl"
+                    onTouchStart={(e) => {
+                      e.stopPropagation();
+                      if (product.hoverImage) {
+                        setMobileHovered((prev) =>
+                          prev === product.id ? null : product.id,
+                        );
+                      }
+                    }}
+                  >
                     {/* Image Box */}
+
                     {/* Main Image */}
                     <img
                       src={product.image}
-                      className="w-full h-125 object-cover"
+                      className={`w-full h-125 object-cover transition duration-700 ${
+                        mobileHovered === product.id
+                          ? " opacity-0"
+                          : "opacity-100"
+                      }`}
                     />
 
                     {/* Shadow */}
@@ -197,7 +253,13 @@ export default function ShopPage() {
                     {/* Hover Image */}
                     <img
                       src={product.hoverImage}
-                      className="absolute inset-0 w-full h-130 object-cover opacity-0 transition duration-700 group-hover:opacity-100 group-hover:scale-105"
+                      className={`absolute inset-0 w-full h-130 object-cover opacity-0 transition duration-700 ${
+                        mobileHovered === product.id
+                          ? " opacity-100 scale-105"
+                          : " opacity-0"
+                      } 
+                      group-hover:opacity-100 group-hover:scale-105
+                      `}
                     />
 
                     {/* Add To Cart Button */}
@@ -236,6 +298,14 @@ export default function ShopPage() {
           </button>
         )}
       </div>
+      <CartDrawer
+        isOpen={CartOpen}
+        onClose={() => setCartOpen(false)}
+        cartItems={cartItems}
+        onRemove={handleRemove}
+        onIncrease={handleIncrease}
+        onDecrease={handleDecrease}
+      />
     </div>
   );
 }

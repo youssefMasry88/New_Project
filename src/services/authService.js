@@ -1,12 +1,49 @@
 import axios from "axios";
 
 const API = "https://homey-strapi.onrender.com/api/auth";
-export const register = async (data) => {
-    const res = await axios.post(`${API}/local/register`, data);
-    return res.data;
-}
 
+// =========================
+// REGISTER
+// =========================
+export const register = async (data) => {
+  const res = await axios.post(`${API}/local/register`, data);
+
+  // Save JWT
+  if (res.data?.jwt) {
+    localStorage.setItem("token", res.data.jwt);
+  }
+
+  // Save user
+  if (res.data?.user) {
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+  }
+
+  return res.data;
+};
+
+// =========================
+// LOGIN
+// =========================
 export const login = async (data) => {
-    const res = await axios.post(`${API}/local`, data);
-    return res.data;
-}
+  const res = await axios.post(`${API}/local`, data);
+
+  // Save JWT
+  if (res.data?.jwt) {
+    localStorage.setItem("token", res.data.jwt);
+  }
+
+  // Save user
+  if (res.data?.user) {
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+  }
+
+  return res.data;
+};
+
+// =========================
+// LOGOUT
+// =========================
+export const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+};

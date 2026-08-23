@@ -12,7 +12,7 @@ import CustomersSays from "../Components/Home/CustomersSays";
 import OfferSectionLeft from "../Components/Home/OfferSectionLeft";
 import { FaArrowUp } from "react-icons/fa";
 import InstagramGallery from "../Components/Home/CategoriesSection";
-import {getHeroSlides} from "../services/heroService";
+import { getHeroSlides } from "../services/heroService";
 import { getHomepage } from "../services/homepageService";
 
 export default function HomePage() {
@@ -27,16 +27,15 @@ export default function HomePage() {
   const [slides, setSlides] = useState([]);
   const [homepage, setHomepage] = useState(null);
 
-
   useEffect(() => {
     const fetchHomepage = async () => {
       try {
         const data = await getHomepage();
         setHomepage(data);
-      }catch (error) {
+      } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchHomepage();
   }, []);
   useEffect(() => {
@@ -50,62 +49,62 @@ export default function HomePage() {
     };
     fetchSlides();
   }, []);
-useEffect(()=> {
-  window.addEventListener("scroll", () => {
-    setShowBtn(window.scrollY > 300);
-  });
-}, [])
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setShowBtn(window.scrollY > 300);
+    });
+  }, []);
   return (
     <div>
       <div className="relative h-screen w-full group ">
-          <Swiper
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-            modules={[Pagination, Autoplay, EffectFade]}
-            effect="fade"
-            speed={800}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            rewind={true}
-            className="h-full w-full"
-            pagination={{
-              clickable: true,
-              renderBullet: (index, bullet) => {
-                return `<span class="${bullet} custom-bullet"></span>`;
-              },
-            }}
-          >
-            {slides.map((slide) => (
-              <SwiperSlide key={slide.id}>
-                <div className="relative h-full w-full overflow-hidden">
-                  <img
-                    src={`https://homey-strapi.onrender.com${slide.image.url}`}
-                    alt={slide.title}
-                    className="h-full w-full object-cover transition-transform duration-5000 scale-100 group-hover:scale-110"
-                  />
+        <Swiper
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+          }}
+          modules={[Pagination, Autoplay, EffectFade]}
+          effect="fade"
+          speed={800}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          rewind={true}
+          className="h-full w-full"
+          pagination={{
+            clickable: true,
+            renderBullet: (index, bullet) => {
+              return `<span class="${bullet} custom-bullet"></span>`;
+            },
+          }}
+        >
+          {slides.map((slide) => (
+            <SwiperSlide key={slide.id}>
+              <div className="relative h-full w-full overflow-hidden">
+                <img
+                  src={`https://homey-strapi.onrender.com${slide.image.url}`}
+                  alt={slide.title}
+                  className="h-full w-full object-cover transition-transform duration-5000 scale-100 group-hover:scale-110"
+                />
 
-                  <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/40"></div>
+                <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/40"></div>
 
-                  {/* text */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
-                    <p className="font-sans text-sm flex uppercase tracking-[0.4em] mb-4 animate-fadeIn">
-                      {slide.subtitle}
-                    </p>
-                    <h1 className="font-nav text-4xl md:text-6xl tracking-tight text-center leading-tight">
-                      {slide.title}
-                    </h1>
+                {/* text */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
+                  <p className="font-sans text-sm flex uppercase tracking-[0.4em] mb-4 animate-fadeIn">
+                    {slide.subtitle}
+                  </p>
+                  <h1 className="font-nav text-4xl md:text-6xl tracking-tight text-center leading-tight">
+                    {slide.title}
+                  </h1>
 
-                    <Link
-                      to={"/shop"}
-                      className=" mt-8 px-8 py-3 border border-white text-white text-xs rounded-md tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all duration-300"
-                    >
-                      Discover Collection
-                    </Link>
-                  </div>
+                  <Link
+                    to={"/shop"}
+                    className=" mt-8 px-8 py-3 border border-white text-white text-xs rounded-md tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all duration-300"
+                  >
+                    Discover Collection
+                  </Link>
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
         {/* Custom Navigation Arrows */}
         <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-6 z-20 pointer-events-none">
           <button
@@ -117,12 +116,9 @@ useEffect(()=> {
 
           <button
             onClick={() => {
-    console.log("ARROW CLICK");
-    console.log("SWIPER:", swiperRef.current);
-    swiperRef.current?.slideNext();
-  }}
+              swiperRef.current?.slideNext();
+            }}
             className="pointer-events-auto w-12 h-12 bg-white/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500"
-            
           >
             <HiOutlineChevronRight size={24} />
           </button>
@@ -139,7 +135,7 @@ useEffect(()=> {
               <span className=" font-secondary text-3xl font-text-semibold md:text-4xl italic ">
                 {homepage?.aboutHeading}
               </span>
-                <p className=" pt-6 font-third text-third">
+              <p className=" pt-6 font-third text-third">
                 {homepage?.aboutDescription}
               </p>
             </div>
@@ -158,14 +154,14 @@ useEffect(()=> {
       </div>
       <InstagramGallery />
       <div className="relative">
-          {showBtn && (
-        <button
-          onClick={handleScroll}
-          className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
-        >
-          <FaArrowUp />
-        </button>
-          )}
+        {showBtn && (
+          <button
+            onClick={handleScroll}
+            className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
+          >
+            <FaArrowUp />
+          </button>
+        )}
       </div>
     </div>
   );

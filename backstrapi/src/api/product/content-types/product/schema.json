@@ -71,6 +71,12 @@
         "videos",
         "audios"
       ]
+    },
+    "wishlists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::wishlist.wishlist",
+      "inversedBy": "products"
     }
   }
 }

@@ -1,12 +1,12 @@
 {
-  "homepage": "https://youssefMasry88.github.io/New_Project",
+  "homepage": "https://youssefmasry88.github.io/New_Project/",
   "name": "homey",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist",
+"deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

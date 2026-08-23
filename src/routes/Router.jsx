@@ -16,6 +16,7 @@ import ScrollToTop from "../Components/UI/ScrollToTop";
 import SinglePage from "../Pages/SinglePage";
 import AccountPage from "../Pages/AccountPage";
 import ProtectedRoute from "../Components/UI/ProtectedRoute";
+import PageLoader from "../Components/Home/PageLoader";
 
 export const Router = createBrowserRouter(
   [
@@ -25,6 +26,7 @@ export const Router = createBrowserRouter(
         <>
           <AppLayout />
           <ScrollToTop />
+          <PageLoader />
         </>
       ),
 

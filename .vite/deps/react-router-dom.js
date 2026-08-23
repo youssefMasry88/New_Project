@@ -8902,7 +8902,7 @@ function RemixRootDefaultHydrateFallback() {
     {
       dangerouslySetInnerHTML: {
         __html: `
-              console.log(
+              g(
                 "💿 Hey developer 👋. You can provide a way better UX than this " +
                 "when your app is loading JS modules and/or running \`clientLoader\` " +
                 "functions. Check out https://reactrouter.com/start/framework/route-module#hydratefallback " +
@@ -10104,7 +10104,7 @@ function RemixRootDefaultErrorBoundary({
     {
       dangerouslySetInnerHTML: {
         __html: `
-        console.log(
+        g(
           "💿 Hey developer 👋. You can provide a way better UX than this when your app throws errors. Check out https://reactrouter.com/how-to/error-boundary for more information."
         );
       `
@@ -13139,7 +13139,7 @@ function RSCDefaultRootErrorBoundaryImpl({
     {
       dangerouslySetInnerHTML: {
         __html: `
-        console.log(
+        g(
           "💿 Hey developer 👋. You can provide a way better UX than this when your app throws errors. Check out https://reactrouter.com/how-to/error-boundary for more information."
         );
       `

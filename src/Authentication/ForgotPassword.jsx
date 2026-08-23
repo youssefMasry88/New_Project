@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   };
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      console.log("LOGIN:", values);
+      
 
       navigate("/reset-code", { state: { success: true } });
 

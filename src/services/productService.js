@@ -7,18 +7,22 @@ export const getProducts = async () => {
 
   return res.data.data.map((item) => ({
     id: item.id,
+    documentId: item.documentId, // ✅ مهم للـ Wishlist
     slug: item.slug,
     name: item.title,
     price: item.price,
     stock: item.stock,
-   image: item.coverImage?.url
-  ? API + item.coverImage.url
-  : "",
 
-hoverImage: item.hover_image?.url
-  ? API + item.hover_image.url
-  : "",
+    image: item.coverImage?.url
+      ? API + item.coverImage.url
+      : "",
+
+    hoverImage: item.hover_image?.url
+      ? API + item.hover_image.url
+      : "",
+
     category: item.category?.name,
+
     tag: item.bestSeller
       ? "Best Sellers"
       : item.newArrival
@@ -26,8 +30,10 @@ hoverImage: item.hover_image?.url
       : item.featured
       ? "Featured Pieces"
       : "",
+
     description:
       item.description?.[0]?.children?.[0]?.text || "",
+
     createdAt: item.createdAt,
   }));
 };
@@ -43,20 +49,25 @@ export const getProductBySlug = async (slug) => {
 
   return {
     id: item.id,
+    documentId: item.documentId, // ✅ مهم جدًا
     slug: item.slug,
     name: item.title,
     price: item.price,
     stock: item.stock,
-    image: item.coverImage?.url
-  ? API + item.coverImage.url
-  : "",
 
-hoverImage: item.hover_image?.url
-  ? API + item.hover_image.url
-  : "",
+    image: item.coverImage?.url
+      ? API + item.coverImage.url
+      : "",
+
+    hoverImage: item.hover_image?.url
+      ? API + item.hover_image.url
+      : "",
+
     category: item.category?.name,
+
     description:
       item.description?.[0]?.children?.[0]?.text || "",
+
     createdAt: item.createdAt,
   };
 };

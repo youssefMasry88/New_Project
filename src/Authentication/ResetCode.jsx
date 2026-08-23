@@ -36,7 +36,6 @@ const handleKeyDown = (e, index , values , setFieldValue) => {
 
 const handleSubmit = async (values, { setSubmitting }) => {
   try {
-    console.log("LOGIN:", values);
     navigate("/resetPassword", { state: { success: true } });
   } catch (err) {
     console.log(err);
@@ -124,7 +123,7 @@ const handleSubmit = async (values, { setSubmitting }) => {
               to="/forgotPassword"
               type="button"
               className="text-primary font-semibold hover:underline"
-              onClick={() => console.log("Resend Code")}
+              
             >
               Send Code
             </Link>

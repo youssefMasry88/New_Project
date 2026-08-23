@@ -9,13 +9,7 @@ function ResetPass() {
   const navigate = useNavigate();
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      // هنا هتحط API بتاعك
-      // مثال:
-      // await api.post("/auth/register", values);
-
-      console.log("REGISTER:", values);
-
-      navigate("/login", { state: { success: true } });
+        navigate("/login", { state: { success: true } });
 
       resetForm();
     } catch (err) {

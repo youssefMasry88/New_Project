@@ -1,5 +1,5 @@
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import React, { useRef } from "react";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -24,7 +24,7 @@ function CustomersSays() {
       text: "It is a long established fact that a reader will be distracted by the readable content of a page when  industry's standard dummy text ever since the 1500s.",
     },
   ];
-  console.log(motion);
+
   
   return (
     <div className="py-30 px-6 overflow-hidden">
@@ -52,7 +52,7 @@ function CustomersSays() {
         >
           {reviews.map((review) => (
             <SwiperSlide key={review.id} >
-              <motion.div
+              <Motion.div
               whileHover={{scale: 1.02}}
               transition={{duration: 0.3}}
               className="space-y-6">
@@ -62,7 +62,7 @@ function CustomersSays() {
                 <h1 className="font-secondary text-black font-bold text-lg tracking-widest uppercase">
                   {review.name}
                 </h1>
-              </motion.div>
+              </Motion.div>
             </SwiperSlide>
           ))}
         </Swiper>

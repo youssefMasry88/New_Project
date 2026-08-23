@@ -10,7 +10,7 @@ export const getCart = () => {
 export const saveCart = (cart) => {
   
   localStorage.setItem("cart", JSON.stringify(cart));
-  // console.log("saveCart", cart);
+  // g("saveCart", cart);
 }
 
 // Add a product to the cart

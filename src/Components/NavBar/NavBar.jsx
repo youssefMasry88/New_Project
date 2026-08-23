@@ -17,7 +17,7 @@ export default function NavBar() {
   const [results, setResults] = useState([]);
   const { user, logout } = useAuth();
   const [products, setProducts] = useState([]);
-  console.log("Navbar:", user);
+
 
   const token = !!user;
   const handleLogout = () => {
