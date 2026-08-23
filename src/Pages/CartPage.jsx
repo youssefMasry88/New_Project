@@ -16,21 +16,25 @@ export default function CartPage() {
         behavior: "smooth",
       });
     };
-    useEffect(() => {
-      window.addEventListener("scroll", () => {
-        setShowBtn(window.scrollY > 300);
-      });
-    }, []);
+useEffect(() => {
+  const handleScroll = () => {
+    setShowBtn(window.scrollY > 300);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
   const refreshCart = () => {
     setCart(getCart());
   };
-const handleClearCart = () => {
-const confirm = window.confirm("Are you sure you want to clear the cart?");
-  
-  if (!confirm) return;
 
+const handleClearCart = () => {
   clearCart();
   setCart([]);
+  toast.success("Cart cleared successfully");
 };
 const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toLocaleString();
 const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
