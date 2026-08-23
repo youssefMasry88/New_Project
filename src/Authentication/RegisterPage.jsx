@@ -39,9 +39,14 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
 
     resetForm();
   } catch (err) {
-    console.log(err.message);
-    setError("Something went wrong, try again ❌");
-  } finally {
+  console.log(err.response?.data);
+
+  const message =
+    err.response?.data?.error?.message ||
+    "Something went wrong, try again ❌";
+
+  setError(message);
+} finally {
     setSubmitting(false);
   }
 };
