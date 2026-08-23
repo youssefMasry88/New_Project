@@ -4,13 +4,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
-  "predeploy": "yarn build",
-  "deploy": "gh-pages -d dist",
-  "dev": "vite",
-  "build": "vite build && node scripts/copy-404.js",
-  "preview": "vite preview"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/copy-404.js",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@strapi/provider-email-nodemailer": "^5.36.1",
