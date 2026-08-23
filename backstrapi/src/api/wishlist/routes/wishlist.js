@@ -5,14 +5,18 @@ module.exports = {
     {
       method: "GET",
       path: "/wishlist/me",
-      handler: "api::wishlist.wishlist.me",
-      config: {},
+      handler: "wishlist.me",
+      config: {
+        auth: {},
+      },
     },
     {
       method: "POST",
       path: "/wishlist/toggle",
-      handler: "api::wishlist.wishlist.toggle",
-      config: {},
+      handler: "wishlist.toggle",
+      config: {
+        auth: {},
+      },
     },
   ],
 };

@@ -22,20 +22,20 @@ export default function SinglePage() {
 // CHECK WISHLIST
 useEffect(() => {
   const checkWishlist = async () => {
-    if (!product?.id) return;
+    if (!product?.documentId) return;
 
     try {
       const wishlist = await getMyWishlist();
 
       console.log("MY WISHLIST:", wishlist);
 
-      const exists = wishlist.some(
-        (item) => Number(item.id) === Number(product.id)
+      const exists = wishlist.products?.some(
+        (item) => item.documentId === product.documentId
       );
 
       console.log("IS IN WISHLIST:", exists);
 
-      setLiked(exists);
+      setLiked(!!exists);
     } catch (error) {
       console.error("CHECK WISHLIST ERROR:", error);
     }
@@ -43,8 +43,6 @@ useEffect(() => {
 
   checkWishlist();
 }, [product]);
-
-
 
 useEffect(() => {
     const fetchProduct = async () => {
@@ -211,7 +209,7 @@ useEffect(() => {
       console.log("PRODUCT BEFORE TOGGLE:", product);
       console.log("PRODUCT ID:", product.id);
       console.log("PRODUCT DOCUMENT ID:", product.documentId);
-      const status = await toggleWishlist(product);
+      const status = await toggleWishlist(product.documentId);
 
 
 

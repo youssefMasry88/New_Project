@@ -1,84 +1,45 @@
-import axios from "axios";
+  import axios from "axios";
 
-const API = "https://homey-strapi.onrender.com";
+  const API = "https://homey-strapi.onrender.com";
 
-const authHeaders = () => {
-  const token = localStorage.getItem("token");
-
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const getToken = () => {
+    return localStorage.getItem("token");
   };
-};
 
-const mapProduct = (product) => ({
-  id: product.id,
-  documentId: product.documentId,
-  slug: product.slug,
-  name: product.title,
-  price: product.price,
-  stock: product.stock,
+  export const getMyWishlist = async () => {
+    const token = getToken();
 
-  image: product.coverImage?.url
-    ? `${API}${product.coverImage.url}`
-    : "",
+    if (!token) {
+      throw new Error("User is not logged in");
+    }
 
-  hoverImage: product.hover_image?.url
-    ? `${API}${product.hover_image.url}`
-    : "",
+    const res = await axios.get(`${API}/api/wishlist/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  category: product.category?.name,
+    return res.data;
+  };
 
-  description:
-    product.description?.[0]?.children?.[0]?.text || "",
-});
+export const toggleWishlist = async (productId) => {
+  const token = getToken();
 
-// =========================
-// GET MY WISHLIST
-// =========================
-
-export const getMyWishlist = async () => {
-  const res = await axios.get(
-    `${API}/api/wishlist/me`,
-    authHeaders()
-  );
-
-  console.log("WISHLIST RESPONSE:", res.data);
-
-  const products = res.data?.products || [];
-
-  return products.map(mapProduct);
-};
-
-// =========================
-// TOGGLE WISHLIST
-// =========================
-
-export const toggleWishlist = async (product) => {
-  console.log("SENDING DOCUMENT ID:", product.documentId);
+  if (!token) {
+    throw new Error("User is not logged in");
+  }
 
   const res = await axios.post(
     `${API}/api/wishlist/toggle`,
     {
-      productId: product.documentId,
+      productId: String(productId),
     },
-    authHeaders()
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
 
-  console.log("WISHLIST TOGGLE RESPONSE:", res.data);
-
-  return res.data.added;
-};
-
-// =========================
-// CHECK IF PRODUCT IS IN WISHLIST
-// =========================
-
-export const isInWishlist = async (productId) => {
-  const wishlist = await getMyWishlist();
-
-  return wishlist.some(
-    (item) => Number(item.id) === Number(productId)
-  );
+  return res.data;
 };
