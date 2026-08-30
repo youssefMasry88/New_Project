@@ -16,7 +16,7 @@ export default function PageLoader() {
       setLoading(true);
 
       const startTime = Date.now();
-      const MINIMUM_TIME = 4000; // Minimum time in milliseconds (4 seconds)
+      const MINIMUM_TIME = 2000; // Minimum time in milliseconds (2 seconds)
 
       const images = Array.from(document.images);
 

@@ -56,7 +56,7 @@ export default function HomePage() {
   }, []);
   return (
     <div>
-      <div className="relative h-screen w-full group ">
+      <div className="h-[80vh] min-h-150 md:h-screen w-full group relative">
         <Swiper
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
@@ -87,10 +87,10 @@ export default function HomePage() {
 
                 {/* text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
-                  <p className="font-sans text-sm flex uppercase tracking-[0.4em] mb-4 animate-fadeIn">
+                  <p className="font-sans text-[10px] sm:text-xs md:text-sm flex uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-3 md:mb-4 text-center">
                     {slide.subtitle}
                   </p>
-                  <h1 className="font-nav text-4xl md:text-6xl tracking-tight text-center leading-tight">
+                  <h1 className="font-nav text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-center leading-tight px-4">
                     {slide.title}
                   </h1>
 
@@ -125,17 +125,17 @@ export default function HomePage() {
         </div>
       </div>
       {/* about */}
-      <div className=" pb-30 ">
-        <div className=" flex md:flex-col md:items-center md:justify-center h-full mt-33  ">
-          <div className=" w-178 ">
-            <h1 className="text-xl font-bold font-nav text-primary pb-3 pl-3 md:pl-0">
+      <div className=" px-5 sm:pb-8 md:pb-12 lg:pb-20 pb-20 2xl:pb-30">
+        <div className=" flex flex-col items-center justify-center mt-20 md:mt-33  ">
+          <div className=" w-full max-w-4xl">
+            <h1 className=" text-lg sm:text-xl font-bold font-nav text-primary pb-3 text-center md:text-left">
               {homepage?.aboutTitle}
             </h1>
             <div className=" text-center">
-              <span className=" font-secondary text-3xl font-text-semibold md:text-4xl italic ">
+              <span className=" font-secondary text-2xl sm:text-3xl md:text-4xl italic leading-relaxed">
                 {homepage?.aboutHeading}
               </span>
-              <p className=" pt-6 font-third text-third">
+              <p className="pt-5 md:pt-6 font-third text-third text-sm sm:text-base leading-7 md:leading-8">
                 {homepage?.aboutDescription}
               </p>
             </div>

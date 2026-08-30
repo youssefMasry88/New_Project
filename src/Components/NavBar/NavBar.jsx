@@ -53,7 +53,7 @@ export default function NavBar() {
     `text-xl font-medium transition-colors duration-300 ${
       isActive
         ? "text-primary border-b border-primary"
-        : "text-secondary hover:text-primary transition-colors duration-300"
+        : "text-fifth hover:text-fourth transition-colors duration-300 hover:border-b hover:border-fourth"
     }`;
 
   const highlightText = (text, query) => {
@@ -276,7 +276,7 @@ export default function NavBar() {
               setOpenSearch(!openSearch);
               setIsOpen(false);
             }}
-            className="text-xl font-medium text-secondary hover:text-primary"
+            className="text-xl font-medium text-fifth hover:text-fourth transition-colors duration-300 cursor-pointer hover:border-b hover:border-fourth"
             >
               search
             </button>
@@ -312,57 +312,3 @@ export default function NavBar() {
     </nav>
   );
 }
-//           <p className="text-xs text-gray-400">
-//             {item.category}
-//           </p>
-//         </div>
-
-//         {/* 💰 Price */}
-//         <span className="text-xs text-gray-400">
-//           EGP {item.price.toLocaleString()}
-//         </span>
-//       </div>
-//     ))}
-
-//   </div>
-// )}
-
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Mobile Menu */}
-//       <div
-//         className={`lg:hidden absolute top-full w-full left-0 backdrop-blur-md shadow-lg transition-all duration-300 overflow-hidden ${
-//           isOpen ? "max-h-125 py-6" : "max-h-0 opacity-0"
-//         }`}
-//       >
-//         <div className="flex flex-col items-center gap-6">
-//           {NavLinks.map((link, i) =>
-//             link.name.toLowerCase() === "search" ? (
-//               <button
-//                 key={i}
-//                 onClick={() => {
-//                   setOpenSearch(!openSearch);
-//                   setIsOpen(false);
-//                 }}
-//                 className="text-xl text-secondary hover:text-primary"
-//               >
-//                 {link.name}
-//               </button>
-//             ) : (
-//               <NavLink
-//                 key={i}
-//                 to={link.path}
-//                 onClick={() => setIsOpen(false)}
-//                 className={navLinkClassMobile}
-//               >
-//                 {link.name}
-//               </NavLink>
-//             )
-//           )}
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// }
