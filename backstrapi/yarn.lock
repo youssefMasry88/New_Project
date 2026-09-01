@@ -2738,13 +2738,13 @@
   dependencies:
     nodemailer "8.0.5"
 
-"@strapi/provider-upload-cloudinary@5.48.1":
-  version "5.48.1"
-  resolved "https://registry.yarnpkg.com/@strapi/provider-upload-cloudinary/-/provider-upload-cloudinary-5.48.1.tgz#1b7a418b72744d86a3ab8acc5252a7ad2bf53199"
-  integrity sha512-QeFYKZOUICGzgDf8S9rFmlRQ16IW6rfKvaCtojBIutC72WRBU3pLOYMtDGoP9MeHWyA2GSCDjbsgh5faKrd1Ig==
+"@strapi/provider-upload-cloudinary@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.yarnpkg.com/@strapi/provider-upload-cloudinary/-/provider-upload-cloudinary-5.20.0.tgz#b9b84688f376b4e12b2ce2a471ee91a1e786259c"
+  integrity sha512-r/OS44ZyhdFBhl6iksEjetSK5WFR4fHT+Om1vdK5hSnix4v2lvUcOLNReemwt/JEhZYweKoMhfrQepChZWUb3Q==
   dependencies:
-    "@strapi/utils" "5.48.1"
-    cloudinary "^2.7.0"
+    "@strapi/utils" "5.20.0"
+    cloudinary "^1.41.0"
     into-stream "^5.1.0"
 
 "@strapi/provider-upload-local@5.48.1":
@@ -2935,6 +2935,22 @@
     react-redux "8.1.3"
     react-select "5.8.0"
     sharp "0.33.5"
+    yup "0.32.9"
+    zod "3.25.67"
+
+"@strapi/utils@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.yarnpkg.com/@strapi/utils/-/utils-5.20.0.tgz#efe78790b4c964256ca5515d03387f9d04667200"
+  integrity sha512-bSxAULsm/XPLs+9JTiNGL4Ia7HSRoU///8X3WmtuHtyr1bNtA723wvI5osbUdtHvpWZX7EUkG64/k4Bs99KqGw==
+  dependencies:
+    "@sindresorhus/slugify" "1.1.0"
+    date-fns "2.30.0"
+    execa "5.1.1"
+    http-errors "2.0.0"
+    lodash "4.17.21"
+    node-machine-id "1.1.12"
+    p-map "4.0.0"
+    preferred-pm "3.1.2"
     yup "0.32.9"
     zod "3.25.67"
 
@@ -4452,12 +4468,20 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==
 
-cloudinary@^2.7.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/cloudinary/-/cloudinary-2.10.0.tgz#38f159c3d85f7b5cfc56f3f6ff73be4b607ce44e"
-  integrity sha512-sY09kYg7wprkndAOjZBAYqFZqwL+SxnEGcAvksOvFA+5upnFn949UjkEkHKNSwkBtW/xRDd0p6NgbSXZcxkI3w==
+cloudinary-core@^2.13.0:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.14.1.tgz#a7d05fa1230366479fda80982ca617bf55e3e2b3"
+  integrity sha512-57rgZSQD2cJsz1rga6M7jIDQuEAzkwvq63vTvs3/I8rNpGLyHMoKoIvBkNS0Guv5RZ9KDReJhI2LmElk4D9U1g==
+
+cloudinary@^1.41.0:
+  version "1.41.3"
+  resolved "https://registry.yarnpkg.com/cloudinary/-/cloudinary-1.41.3.tgz#dc96725122099349adba6ab4eccda84fa13e8c2e"
+  integrity sha512-4o84y+E7dbif3lMns+p3UW6w6hLHEifbX/7zBJvaih1E9QNMZITENQ14GPYJC4JmhygYXsuuBb9bRA3xWEoOfg==
   dependencies:
-    lodash "^4.17.23"
+    cloudinary-core "^2.13.0"
+    core-js "^3.30.1"
+    lodash "^4.17.21"
+    q "^1.5.1"
 
 co-body@^6.1.0:
   version "6.2.0"
@@ -4701,6 +4725,11 @@ core-js-pure@^3.23.3:
   version "3.49.0"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.49.0.tgz#ff8436b7251a3832f5fdbbe3e10f7f2e58e51fb1"
   integrity sha512-XM4RFka59xATyJv/cS3O3Kml72hQXUeGRuuTmMYFxwzc9/7C8OYTaIR/Ji+Yt8DXzsFLNhat15cE/JP15HrCgw==
+
+core-js@^3.30.1:
+  version "3.50.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.50.0.tgz#a18646fcb0097650189b4504c803e887bcae4c0a"
+  integrity sha512-BRWgOLKkFeCgRudR6zrs8p9XJZcE14grzKMMssoYrk6krtuEZ7MTKPIY5RzOnqsEKIR9kst7wNzphttraT+Yqw==
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -7180,12 +7209,17 @@ lodash.isplainobject@4.0.6:
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
   integrity sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==
 
+lodash@4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 lodash@4.17.23:
   version "4.17.23"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
   integrity sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==
 
-lodash@4.18.1, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.23, lodash@^4.17.4:
+lodash@4.18.1, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
   integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
@@ -8680,6 +8714,16 @@ prebuild-install@^7.1.1:
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
 
+preferred-pm@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.1.2.tgz#aedb70550734a574dffcbf2ce82642bd1753bdd6"
+  integrity sha512-nk7dKrcW8hfCZ4H6klWcdRknBOXWzNQByJ0oJyX97BOupsYD+FzLS4hflgEu/uPUEHZCuRfMxzCBsuWd7OzT8Q==
+  dependencies:
+    find-up "^5.0.0"
+    find-yarn-workspace-root2 "1.2.16"
+    path-exists "^4.0.0"
+    which-pm "2.0.0"
+
 preferred-pm@3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.1.3.tgz#4125ea5154603136c3b6444e5f5c94ecf90e4916"
@@ -8797,6 +8841,11 @@ purest@4.0.2:
     request-compose "^2.1.4"
     request-multipart "^1.0.0"
     request-oauth "^1.0.1"
+
+q@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
+  integrity sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==
 
 qs@6.15.2, qs@^6.10.3, qs@^6.11.0, qs@^6.14.0, qs@^6.15.2, qs@^6.5.2, qs@^6.9.6:
   version "6.15.2"
