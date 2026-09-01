@@ -53,7 +53,7 @@ export default function ShopPage() {
         const data = await getProducts();
         setProducts(data);
       } catch (error) {
-        g(error);
+        console.log(error);
       }
     };
 
@@ -72,7 +72,7 @@ export default function ShopPage() {
           ...data.map((category) => category.name),
         ]);
       } catch (error) {
-        g(error);
+        console.log(error);
       }
     };
 

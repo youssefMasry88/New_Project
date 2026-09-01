@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FiInstagram } from "react-icons/fi";
 import { getInstagramPosts } from "../../services/instagramService";
+import { motion as Motion } from "framer-motion";
+
 
 export default function InstagramGallery() {
   const [posts, setPosts] = useState([]);
@@ -28,10 +30,14 @@ export default function InstagramGallery() {
 
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {posts.map((post) => (
-          <div
+        {posts.map((post, index) => (
+          <Motion.div
             key={post.id}
             className="relative group overflow-hidden rounded-2xl"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true , amount: 0.2 }}
+            transition={{ duration: 0.7 , ease: "easeOut", delay: index * 0.08 }}
           >
             <img
               src={
@@ -40,6 +46,7 @@ export default function InstagramGallery() {
               alt={post.altText || "Instagram"}
               loading="lazy"
               className="w-full h-55 object-cover transition duration-500 group-hover:scale-105"
+              
             />
 
             {/* overlay */}
@@ -51,12 +58,15 @@ export default function InstagramGallery() {
             >
               <FiInstagram className="text-white text-2xl opacity-0 group-hover:opacity-100 transition" />
             </a>
-          </div>
+          </Motion.div>
         ))}
       </div>
 
       {/* Button */}
-      <div className="text-center mt-10">
+      <Motion.div className="text-center mt-10"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true , amount: 0.2 }}>
         <a
           href="https://instagram.com"
           target="_blank"
@@ -66,7 +76,7 @@ export default function InstagramGallery() {
           <FiInstagram />
           Follow on Instagram
         </a>
-      </div>
+      </Motion.div>
     </section>
   );
 }
