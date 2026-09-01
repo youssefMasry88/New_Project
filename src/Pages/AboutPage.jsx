@@ -1,36 +1,62 @@
-import React from "react";
-import About from "../assets/About.png";
+import React, { useEffect, useState } from "react";
 import { IconTruckDelivery } from "@tabler/icons-react";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { PiArrowsClockwiseBold } from "react-icons/pi";
+import { FaArrowUp } from "react-icons/fa";
+import { getAbout } from "../services/aboutService";
+import { getMediaUrl } from "../services/api";
 import T1 from "../assets/T1.jpg";
 import T2 from "../assets/T2.jpg";
 import T3 from "../assets/T3.jpg";
 import T4 from "../assets/T4.jpg";
-import { FaArrowUp } from "react-icons/fa";
-export default function AboutPage() {
-  const handleScroll = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
-  const data = [
-    { id: 1, name: "John Smith", role: "Founder", Img: T1 },
-    { id: 2, name: "Emily Clark", role: "Designer", Img: T2 },
-    { id: 3, name: "Michael Lee", role: "Manager", Img: T3 },
-    { id: 4, name: "Sarah Brown", role: "Marketing", Img: T4 },
-  ];
+
+export default function AboutPage() {
+ const [about, setAbout] = useState(null);
+ const [showBtn, setShowBtn] = useState(false);
+
+const data = [
+  { id: 1, name: "John Smith", role: "Founder", Img: T1 },
+  { id: 2, name: "Emily Clark", role: "Designer", Img: T2 },
+  { id: 3, name: "Michael Lee", role: "Manager", Img: T3 },
+  { id: 4, name: "Sarah Brown", role: "Marketing", Img: T4 },
+];
+//  get About Data
+ useEffect(()=> {
+  const fetchAbout = async () => {
+    try{
+      const data = await getAbout();
+      setAbout(data);
+    } catch (error) {
+      console.error("Error fetching about data:", error);
+    }
+  }
+  fetchAbout();
+ } , []); 
+
+useEffect(() => {
+  const handleScroll = () => {
+    setShowBtn(window.scrollY > 300);
+  }
+  window.addEventListener("scroll", handleScroll);
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  }
+} , []);
+const handleScroll = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+ const heroImage = getMediaUrl(about?.heroImage?.url);
   return (
     <div className="min-h-screen  ">
       <div
         className="w-full h-[60vh] bg-cover bg-center relative flex items-center justify-center"
-        style={{ backgroundImage: `url(${About})` }}
+        style={{ backgroundImage: `url(${heroImage})` }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
 
-        <h1 className="text-5xl text-[#C57A1A] font-nav relative">About Us</h1>
+        <h1 className="text-5xl text-[#C57A1A] font-nav relative">{about?.heroTitle}</h1>
       </div>
       {/* Services */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 md:px-10 lg:px-20 py-30">
@@ -72,42 +98,23 @@ export default function AboutPage() {
       {/* story */}
       <div className="flex flex-col gap-6 ">
         <h1 className="font-secondary text-4xl font-semibold text-primary px-6 md:px-10 lg:px-25">
-          How We Started?
+          {about?.storyTitle}
         </h1>
         <p className="text-third font-third text-md px-6 md:px-10 lg:px-33">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type Letraset sheets containing Lorem Ipsum
-          passages, and more recently with desktop publishing Letraset sheets
-          containing Lorem Ipsum passages, and more recently with desktop
-          publishing specimen book. It has survived not only five centuries, but
-          also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of
-          Letraset sheets containing Lorem Ipsum passages, and more recently
-          with desktop publishing
+          {about?.storyDescription}
         </p>
       </div>
 
       {/* mission */}
       <div className="flex flex-col gap-6  py-15">
         <h1 className="font-secondary text-4xl font-semibold text-primary px-6 md:px-10 lg:px-25">
-          What we stand for as a business?
+          {about?.missionTitle}
         </h1>
         <p className="text-third font-third text-md px-6 md:px-10 lg:px-33">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type Letraset sheets containing Lorem Ipsum
-          passages, and more recently with desktop publishing Letraset sheets
-          containing Lorem Ipsum passages, and more recently with desktop
-          publishing specimen book. It has survived not only five centuries, but
-          also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of
-          Letraset sheets containing Lorem Ipsum passages, and more recently
-          with desktop publishing
+          {about?.missionDescription}
         </p>
       </div>
+
 
       {/* Team */}
       <div>
@@ -136,12 +143,15 @@ export default function AboutPage() {
           ))}
         </div>
       </div>
+      {showBtn && (
         <button
           onClick={handleScroll}
           className="animate-bounce fixed bottom-6 right-6 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full"
         >
           <FaArrowUp />
         </button>
+
+      )}
     </div>
   );
 }

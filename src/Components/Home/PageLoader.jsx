@@ -5,51 +5,14 @@ import Loader from "./Loader";
 
 export default function PageLoader() {
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 700);
 
-    const startLoading = () => {
-      if (cancelled) return;
-
-      setLoading(true);
-
-      const startTime = Date.now();
-      const MINIMUM_TIME = 2000; // Minimum time in milliseconds (2 seconds)
-
-      const images = Array.from(document.images);
-
-      const imagePromises = images.map((img) => {
-        if (img.complete) {
-          return Promise.resolve();
-        }
-
-        return new Promise((resolve) => {
-          img.addEventListener("load", resolve, { once: true });
-          img.addEventListener("error", resolve, { once: true });
-        });
-      });
-
-      Promise.all(imagePromises).then(() => {
-        if (cancelled) return;
-
-        const elapsed = Date.now() - startTime;
-        const remaining = Math.max(0, MINIMUM_TIME - elapsed);
-
-        setTimeout(() => {
-          if (!cancelled) {
-            setLoading(false);
-          }
-        }, remaining);
-      });
-    };
-
-    requestAnimationFrame(startLoading);
-
-    return () => {
-      cancelled = true;
-    };
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   return (

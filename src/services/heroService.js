@@ -1,8 +1,7 @@
 import axios from "axios";
-
-const API = "https://homey-strapi.onrender.com/api";
+import { API_URL } from "./api";
 
 export const getHeroSlides = async () => {
-    const res = await axios.get(`${API}/hero-slides?populate=*`);
+    const res = await axios.get(`${API_URL}/hero-slides?populate=*`);
     return res.data.data;
 }

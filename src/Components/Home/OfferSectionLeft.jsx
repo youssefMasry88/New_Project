@@ -3,6 +3,7 @@ import Hand1 from "../../assets/Hand1.jpg";
 import { Link } from "react-router-dom";
 import Aos from "aos";
 import { getOffers } from "../../services/offerService";
+import { getMediaUrl } from "../../services/api";
 export default function OfferSectionLeft() {
   const [offers, setOffers] = useState([]);
 
@@ -35,10 +36,7 @@ export default function OfferSectionLeft() {
               data-aos-duration="1500"
             >
               <img
-                src={offer.image.url
-                  ? `https://homey-strapi.onrender.com${offer.image.url}`
-                  : ""
-                }
+                src={getMediaUrl(offer.image?.url)}
                 alt={offer.heading || offer.title}
                 className=" w-full h-165 object-cover transition-transform duration-700 group-hover:scale-105"
               />

@@ -1,8 +1,7 @@
 import axios from "axios";
-
-const API = "https://homey-strapi.onrender.com/api";
+import { API_URL } from "./api";
 
 export const getHomepage = async () => {
-    const res = await axios.get(`${API}/homepage`);
+    const res = await axios.get(`${API_URL}/homepage`);
     return res.data.data;
 };

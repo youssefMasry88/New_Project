@@ -1,9 +1,8 @@
 import axios from "axios";
-
-const API = "https://homey-strapi.onrender.com";
+import { API_URL } from "./api";
 
 export const getCategories = async () => {
-    const res = await axios.get(`${API}/api/categories?populate=*`);
+    const res = await axios.get(`${API_URL}/categories?populate=*`);
     return res.data.data.map((item) => ({
         id: item.id,
         name: item.name

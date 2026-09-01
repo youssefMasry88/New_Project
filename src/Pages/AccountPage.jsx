@@ -16,6 +16,7 @@ import {
   getMyWishlist,
   toggleWishlist,
 } from "../services/wishlistService";
+import { getMediaUrl } from "../services/api";
 
 import { addToCart } from "../utils/cart";
 
@@ -155,7 +156,7 @@ export default function AccountPage() {
             image &&
             image.startsWith("/")
           ) {
-            image = `https://homey-strapi.onrender.com${image}`;
+            image = getMediaUrl(image);
           }
 
           return {
@@ -458,7 +459,7 @@ export default function AccountPage() {
             image &&
             image.startsWith("/")
           ) {
-            image = `https://homey-strapi.onrender.com${image}`;
+            image = getMediaUrl(image);
           }
 
           return {

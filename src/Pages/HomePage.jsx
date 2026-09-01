@@ -14,6 +14,7 @@ import { FaArrowUp } from "react-icons/fa";
 import InstagramGallery from "../Components/Home/CategoriesSection";
 import { getHeroSlides } from "../services/heroService";
 import { getHomepage } from "../services/homepageService";
+import { getMediaUrl } from "../services/api";
 
 export default function HomePage() {
   const [showBtn, setShowBtn] = useState(false);
@@ -49,11 +50,17 @@ export default function HomePage() {
     };
     fetchSlides();
   }, []);
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      setShowBtn(window.scrollY > 300);
-    });
-  }, []);
+useEffect(() => {
+  const handleScroll = () => {
+    setShowBtn(window.scrollY > 300);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
   return (
     <div>
       <div className="h-[80vh] min-h-150 md:h-screen w-full group relative">
@@ -78,7 +85,7 @@ export default function HomePage() {
             <SwiperSlide key={slide.id}>
               <div className="relative h-full w-full overflow-hidden">
                 <img
-                  src={`https://homey-strapi.onrender.com${slide.image.url}`}
+                  src={getMediaUrl(slide.image?.url)}
                   alt={slide.title}
                   className="h-full w-full object-cover transition-transform duration-5000 scale-100 group-hover:scale-110"
                 />

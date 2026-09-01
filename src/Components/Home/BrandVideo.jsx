@@ -2,26 +2,16 @@ import React, { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { getBrandVideo } from "../../services/brandVideoService";
+import { getMediaUrl } from "../../services/api";
 
 export default function BrandVideo() {
   const [isOpen, setIsOpen] = useState(false);
   const [brandVideo, setBrandVideo] = useState(null);
-  const API = "https://homey-strapi.onrender.com";
 
   useEffect(() => {
     const fetchBrandVideo = async () => {
       try {
         const data = await getBrandVideo();
-        ("BRAND VIDEO:", data);
-(
-  "IMAGE URL:",
-  `https://homey-strapi.onrender.com${data?.backgroundImage?.url}`
-);
-(
-  "VIDEO URL:",
-  `https://homey-strapi.onrender.com${data?.video?.url}`
-);
-
         setBrandVideo(data);
       } catch (error) {
         console.error("Error fetching brand video:", error);
@@ -37,7 +27,7 @@ export default function BrandVideo() {
       >
         {brandVideo?.backgroundImage?.url && (
           <img
-            src={`https://homey-strapi.onrender.com${brandVideo.backgroundImage.url}`}
+            src={getMediaUrl(brandVideo.backgroundImage.url)}
             alt="brand story"
             className="w-full h-full transition-transform object-cover duration-1000 group-hover:scale-105"
           />
@@ -67,7 +57,7 @@ export default function BrandVideo() {
               {brandVideo?.video?.url && (
                 <video
                   onClick={(e) => e.stopPropagation()}
-                  src={`https://homey-strapi.onrender.com${brandVideo.video.url}`}
+                  src={getMediaUrl(brandVideo.video.url)}
                   controls
                   autoPlay
                   className="w-full h-full rounded-md shadow-inner object-contain"

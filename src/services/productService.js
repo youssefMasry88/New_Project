@@ -1,9 +1,8 @@
 import axios from "axios";
-
-const API = "https://homey-strapi.onrender.com";
+import { API_URL, getMediaUrl } from "./api";
 
 export const getProducts = async () => {
-  const res = await axios.get(`${API}/api/products?populate=*`);
+  const res = await axios.get(`${API_URL}/products?populate=*`);
 
   return res.data.data.map((item) => ({
     id: item.id,
@@ -13,13 +12,9 @@ export const getProducts = async () => {
     price: item.price,
     stock: item.stock,
 
-    image: item.coverImage?.url
-      ? API + item.coverImage.url
-      : "",
+    image: getMediaUrl(item.coverImage?.url),
 
-    hoverImage: item.hover_image?.url
-      ? API + item.hover_image.url
-      : "",
+    hoverImage: getMediaUrl(item.hover_image?.url),
 
     category: item.category?.name,
 
@@ -40,7 +35,7 @@ export const getProducts = async () => {
 
 export const getProductBySlug = async (slug) => {
   const res = await axios.get(
-    `${API}/api/products?filters[slug][$eq]=${slug}&populate=*`
+    `${API_URL}/products?filters[slug][$eq]=${slug}&populate=*`
   );
 
   const item = res.data.data[0];
@@ -55,13 +50,9 @@ export const getProductBySlug = async (slug) => {
     price: item.price,
     stock: item.stock,
 
-    image: item.coverImage?.url
-      ? API + item.coverImage.url
-      : "",
+    image: getMediaUrl(item.coverImage?.url),
 
-    hoverImage: item.hover_image?.url
-      ? API + item.hover_image.url
-      : "",
+    hoverImage: getMediaUrl(item.hover_image?.url),
 
     category: item.category?.name,
 

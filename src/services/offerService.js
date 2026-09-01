@@ -1,8 +1,7 @@
 import axios from "axios";
-
-const API_URL = "https://homey-strapi.onrender.com/api/offer-sections?populate=*";
+import { API_URL } from "./api";
 
 export const getOffers = async () => {
-    const res = await axios.get(API_URL);
+    const res = await axios.get(`${API_URL}/offer-sections?populate=*`);
     return res.data.data;
 };

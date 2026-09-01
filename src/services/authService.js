@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_URL } from "./api";
 
-const API = "https://homey-strapi.onrender.com/api/auth";
+const API = `${API_URL}/auth`;
 
 // =========================
 // REGISTER

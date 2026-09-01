@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FiInstagram } from "react-icons/fi";
 import { getInstagramPosts } from "../../services/instagramService";
 import { motion as Motion } from "framer-motion";
+import { getMediaUrl } from "../../services/api";
 
 
 export default function InstagramGallery() {
@@ -41,7 +42,7 @@ export default function InstagramGallery() {
           >
             <img
               src={
-                post.image?.url ? `https://homey-strapi.onrender.com${post.image?.url}` : ""
+                getMediaUrl(post.image?.url)
               }
               alt={post.altText || "Instagram"}
               loading="lazy"
