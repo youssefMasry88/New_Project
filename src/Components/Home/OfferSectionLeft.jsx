@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Hand1 from "../../assets/Hand1.jpg";
 import { Link } from "react-router-dom";
 import Aos from "aos";
@@ -49,7 +48,7 @@ export default function OfferSectionLeft() {
               <div
                 className="absolute bottom-30 left-10 space-y-2"
                 data-aos="fade-up"
-                data-aos-duration="2500"
+                data-aos-duration="1500"
               >
                 <h3 className="font-nav text-primary text-3xl ">
                   {offer.title}
@@ -64,8 +63,8 @@ export default function OfferSectionLeft() {
 
             {/* content */}
 
-            <div className={`px-10 md:px-20 lg:px-24 space-y-4 ${isReversed ? "md:order-1" : ""}`}>
-              <div className="space-y-4  ">
+            <div className={`px-10 md:px-20 lg:px-24 space-y-9 ${isReversed ? "md:order-1" : ""}`}>
+              <div  data-aos="fade-up" data-aos-duration="2000">
                 <span className=" text-secondary text-sm capitalize ">
                   {offer.title}
                 </span>
@@ -84,7 +83,7 @@ export default function OfferSectionLeft() {
               <Link
                 to={offer.buttonLink || "/shop"}
                 data-aos="fade-up"
-                data-aos-duration="3000"
+                data-aos-duration="1500"
                 className="bg-secondary text-white  text-xs font-bold uppercase tracking-widest px-12 py-4 rounded-sm hover:bg-primary transition-all shadow-lg active:scale-95"
               >
                 {offer.buttonText || "Shop Now"}
